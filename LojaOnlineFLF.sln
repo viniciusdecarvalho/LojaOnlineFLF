@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.809.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.WebAPI", "LojaOnlineFLF.WebAPI\LojaOnlineFLF.WebAPI.csproj", "{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.DataModel", "LojaOnlineFLF.DataModel\LojaOnlineFLF.DataModel.csproj", "{ECAD8B6C-B050-4D11-8B11-A478A10B5735}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.AuthAPI", "LojaOnlineFLF.AuthAPI\LojaOnlineFLF.AuthAPI.csproj", "{DA91F7B2-9878-465B-B66D-89E958417E5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{829FA652-F324-4FDA-BC87-69B5C1DF3F4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{48D91D45-DEEF-4C90-B840-44E2A89A83C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.Utils", "LojaOnlineFLF.Utils\LojaOnlineFLF.Utils.csproj", "{BD8E289C-3242-43B8-B685-46123C40E16C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F3004474-B637-4417-AA03-01E6B2A85C97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECAD8B6C-B050-4D11-8B11-A478A10B5735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECAD8B6C-B050-4D11-8B11-A478A10B5735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECAD8B6C-B050-4D11-8B11-A478A10B5735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECAD8B6C-B050-4D11-8B11-A478A10B5735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA91F7B2-9878-465B-B66D-89E958417E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA91F7B2-9878-465B-B66D-89E958417E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA91F7B2-9878-465B-B66D-89E958417E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA91F7B2-9878-465B-B66D-89E958417E5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD8E289C-3242-43B8-B685-46123C40E16C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD8E289C-3242-43B8-B685-46123C40E16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD8E289C-3242-43B8-B685-46123C40E16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD8E289C-3242-43B8-B685-46123C40E16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3004474-B637-4417-AA03-01E6B2A85C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3004474-B637-4417-AA03-01E6B2A85C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3004474-B637-4417-AA03-01E6B2A85C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3004474-B637-4417-AA03-01E6B2A85C97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66B42F7C-A9C5-4CA0-8F33-2E6C9FEAE60D}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A} = {829FA652-F324-4FDA-BC87-69B5C1DF3F4B}
+		{ECAD8B6C-B050-4D11-8B11-A478A10B5735} = {48D91D45-DEEF-4C90-B840-44E2A89A83C3}
+		{DA91F7B2-9878-465B-B66D-89E958417E5D} = {829FA652-F324-4FDA-BC87-69B5C1DF3F4B}
+		{BD8E289C-3242-43B8-B685-46123C40E16C} = {48D91D45-DEEF-4C90-B840-44E2A89A83C3}
+	EndGlobalSection
+EndGlobal
