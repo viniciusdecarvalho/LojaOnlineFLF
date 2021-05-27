@@ -1,27 +1,19 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-# copy csproj and restore as distinct layers
-COPY *.sln .
-COPY LojaOnlineFLF.Utils/*.csproj LojaOnlineFLF.Utils/
-COPY LojaOnlineFLF.DataModel/*.csproj LojaOnlineFLF.DataModel/
-COPY *.csproj LojaOnlineFLF.WebAPI/
-#
-RUN dotnet restore
 COPY . .
-WORKDIR /src/LojaOnlineFLF.WebAPI
-RUN dotnet build  -c Release -o /app/build
+RUN dotnet restore LojaOnlineFLF.sln
+RUN dotnet build --no-restore -c Release -o /app LojaOnlineFLF.sln
 
 FROM build AS publish
-RUN dotnet publish "LojaOnlineFLF.WebAPI.csproj" -c Release -o /app/publish
+RUN dotnet publish --no-restore -c Release -o /app LojaOnlineFLF.sln
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LojaOnlineFLF.WebAPI.dll"]
+COPY --from=publish /app .
+# Padrão de container ASP.NET
+#ENTRYPOINT ["dotnet", "LojaOnlineFLF.WebAPI.dll"]
+# Opção utilizada pelo Heroku
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet LojaOnlineFLF.WebAPI.dll

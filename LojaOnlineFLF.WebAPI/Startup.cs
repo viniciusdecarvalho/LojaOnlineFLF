@@ -1,3 +1,4 @@
+using System;
 using FluentValidation.AspNetCore;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
@@ -26,11 +27,12 @@ namespace LojaOnlineFLF.WebAPI
         {
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("*");
-                    });
+                options.AddPolicy("CorsPolicy",
+                    builder =>               
+                        builder
+                            .WithOrigins("*")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
             });
 
             services.AddControllers(options => {
@@ -40,7 +42,10 @@ namespace LojaOnlineFLF.WebAPI
             .AddFluentValidation();
 
             services.AddDbContext<LojaEFContext>(opt => {
-                opt.UseNpgsql(Configuration.GetConnectionString("lojaonline"));
+                string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                                          Configuration.GetConnectionString("lojaonline");
+
+                opt.UseNpgsql(connectionString);
             });
 
             services.AddIdentity<Acesso, IdentityRole>(options =>
@@ -63,9 +68,9 @@ namespace LojaOnlineFLF.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseSwaggerConfig();
             }
+
+            app.UseSwaggerConfig();
 
             app.UseHttpsRedirection();
 
@@ -74,7 +79,7 @@ namespace LojaOnlineFLF.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors();
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "POST", "OPTIONS", "DELETE", "PUT"));
 
             app.UseEndpoints(endpoints =>
             {
