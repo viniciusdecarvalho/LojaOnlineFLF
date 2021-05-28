@@ -28,7 +28,7 @@ namespace LojaOnlineFLF.WebAPI
 
         public static IServiceCollection AddSwaggerGenConfig(this IServiceCollection services)
         {
-            var xmlDoc = Path.Combine(System.AppContext.BaseDirectory, "LojaOnlineFLF.xml");
+            var xmlDoc = Path.Combine(System.AppContext.BaseDirectory, "LojaOnlineFLF.WebAPI.xml");
             services.AddSwaggerGen(c => {
 
                 c.CustomSchemaIds(x => {

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
+    /// <summary>
+    /// Controle de acesso
+    /// </summary>
     [ApiController]
     [AllowAnonymous]
     [Produces(K.MediaTypes.AplicationJson)]
@@ -17,6 +20,9 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         private readonly IAcessosService acessosService;
         private readonly IAuthService authService;
 
+        /// <summary>
+        /// Construtor padrao
+        /// </summary>
         public AcessosController(
             IAcessosService acessosService,
             IAuthService authService)
@@ -25,6 +31,9 @@ namespace LojaOnlineFLF.WebAPI.Controllers
             this.authService = authService;
         }
 
+        /// <summary>
+        /// Realizar login, recuperar token de acesso ao servico
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

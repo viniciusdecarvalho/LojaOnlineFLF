@@ -15,30 +15,6 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         public string ObterToken(AfirmacaoTO afirmacao)
         {
-            /*
-            //cria token (header + payload >> direitos + signature)
-            var direitos = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, afirmacao.Usuario),
-                new Claim(JwtRegisteredClaimNames.Jti, afirmacao.Key)
-            };
-
-            var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
-            var credenciais = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: Issuer,
-                audience: Audience,
-                claims: direitos,
-                signingCredentials: credenciais,
-                expires: DateTime.Now.AddHours(8)
-            );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return tokenString;
-            */
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(K.Auth.SecurityKey);
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);

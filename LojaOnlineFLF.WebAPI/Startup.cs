@@ -42,7 +42,7 @@ namespace LojaOnlineFLF.WebAPI
             .AddFluentValidation();
 
             services.AddDbContext<LojaEFContext>(opt => {
-                string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ??
                                           Configuration.GetConnectionString("lojaonline");
 
                 opt.UseNpgsql(connectionString);
@@ -63,14 +63,19 @@ namespace LojaOnlineFLF.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LojaEFContext context)
         {
+            if (env.IsProduction())
+            {
+                context.Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
 
-            app.UseSwaggerConfig();
+                app.UseSwaggerConfig();
+            }
 
             app.UseHttpsRedirection();
 
