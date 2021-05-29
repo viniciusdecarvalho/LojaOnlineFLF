@@ -34,7 +34,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         public async Task<FuncionarioTO> AdicionarAsync(FuncionarioTO funcionario)
         {
             VerificarFuncionarioNaoNulo(funcionario);
-            VerificarFuncionarioJaExistePorId(funcionario);
+            await VerificarFuncionarioJaExistePorIdAsync(funcionario);
             await VerificarFuncionarioJaExistePorCpf(funcionario);
 
             var entity = this.mapper.Map<Funcionario>(funcionario);
@@ -62,9 +62,9 @@ namespace LojaOnlineFLF.WebAPI.Services
             }
         }
 
-        private void VerificarFuncionarioJaExistePorId(FuncionarioTO funcionario)
+        private async Task VerificarFuncionarioJaExistePorIdAsync(FuncionarioTO funcionario)
         {
-            var existe = this.funcionariosProvider.ObterPorCpfAsync(funcionario.Cpf);
+            var existe = await this.funcionariosProvider.ObterPorCpfAsync(funcionario.Cpf);
 
             if (existe != null)
             {
