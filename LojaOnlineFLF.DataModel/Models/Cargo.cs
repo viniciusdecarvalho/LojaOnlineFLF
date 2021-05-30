@@ -25,5 +25,10 @@ namespace LojaOnlineFLF.DataModel.Models
         /// 
         /// </summary>
         public ICollection<Funcionario> Funcionarios { get; set; } = new List<Funcionario>();
+
+        public override string ToString()
+        {
+            return this.Nome;
+        }
     }
 }

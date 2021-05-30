@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using LojaOnlineFLF.DataModel;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models
 {
@@ -12,23 +13,33 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         ///<summary>
         /// Construtor padrao
         ///</summary>
-        public FuncionarioValidator()
+        public FuncionarioValidator(ICargos cargos)
         {
+            if (cargos is null)
+            {
+                throw new ArgumentNullException(nameof(cargos));
+            }
+
             this.RuleFor(x => x.Nome)
-                .Length(5, 50)
-                .WithMessage("Nome deve ter de 5 a 50 caracteres");
+                .Length(5, 50);
 
             this.RuleFor(x => x.Cpf)
-                .NotEmpty().Matches("")
-                .WithMessage("CPF invalido");
+                .NotEmpty()
+                .NotNull();                
+                //.Matches(@"/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/");
+
+            this.RuleFor(x => x.Cargo)
+                .NotEmpty()
+                .NotNull()
+                .Must((f, c) => cargos.IsValid(c))
+                .WithMessage($"invalido. possiveis: [{cargos}]");
 
             this.RuleFor(x => x.DataInicio)
-                .NotEmpty()
-                .WithMessage("DataInicio obrigatorio");
+                .NotNull();
 
             this.RuleFor(x => x.DataFim)
                 .Must((f, df) => !df.HasValue || ( df.HasValue && df >= f.DataInicio))
-                .WithMessage("DataFim deve ser posterior a DataInicio");
+                .WithMessage("deve ser posterior a DataInicio");            
         }
     }
 }

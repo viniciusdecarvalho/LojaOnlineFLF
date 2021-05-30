@@ -15,8 +15,8 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     ///</summary>
     [Authorize]
     [ApiController]
+    [Consumes(K.MediaTypes.AplicationJson)]
     [Produces(K.MediaTypes.AplicationJson)]
-    [ProducesErrorResponseType(typeof(ErrorInfoTO))]
     [Route("api/funcionarios")]
     public sealed class FuncionariosController : ControllerBase
     {
@@ -75,11 +75,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AdicionarFuncionario([FromBody] FuncionarioTO funcionario)
+        public async Task<IActionResult> AdicionarFuncionario([FromBody] FuncionarioTO funcionario)
         {
-            this.funcionariosService.AdicionarAsync(funcionario);
+            var novoFuncionario = await this.funcionariosService.AdicionarAsync(funcionario);
 
-            return Created($"api/funcionarios/{funcionario.Id}", funcionario);
+            return Created($"api/funcionarios/{novoFuncionario.Id}", novoFuncionario);
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult AtualizarFuncionario([FromRoute]Guid id, [FromBody] FuncionarioTO funcionario)
+        public async Task<IActionResult> AtualizarFuncionario([FromRoute]Guid id, [FromBody] FuncionarioTO funcionario)
         {       
-            this.funcionariosService.AtualizarAsync(funcionario);
+            await this.funcionariosService.AtualizarAsync(funcionario);
 
             return Ok(funcionario);
         }

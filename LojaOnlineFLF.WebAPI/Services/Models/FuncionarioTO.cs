@@ -30,7 +30,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         /// Cargo do functionario
         ///</summary>
         ///<example>1 - Operacional, 2 - Gerente</example>
-        public CargoTO Cargo { get; set; }
+        public string Cargo { get; set; }
 
         /// <summary>
         /// Data de inicio do funcionario
