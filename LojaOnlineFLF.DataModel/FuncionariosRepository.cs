@@ -31,7 +31,11 @@ namespace LojaOnlineFLF.DataModel
 
         public async Task<IEnumerable<Funcionario>> ListarAsync()
         {
-            return await context.Funcionarios.Where(f => f.Ativo).AsNoTracking().ToListAsync();
+            return await context.Funcionarios
+                                .Include(f => f.Cargo)
+                                .Where(f => f.Ativo)
+                                .AsNoTracking()
+                                .ToListAsync();
         }
 
         public async Task<Funcionario> ObterAsync(Guid id)
@@ -67,11 +71,10 @@ namespace LojaOnlineFLF.DataModel
         {
             var cargos = await this.context.Cargos.ToListAsync();
 
-            return new Cargos
-            {
-                Operacional = cargos.FirstOrDefault(c => c.Id == Cargo.Operacional),
-                Gerente = cargos.FirstOrDefault(c => c.Id == Cargo.Gerente)
-            };
+            var gerente = cargos.FirstOrDefault(c => c.Id == Cargo.Gerente);
+            var operacional = cargos.FirstOrDefault(c => c.Id == Cargo.Operacional);
+
+            return new Cargos(gerente: gerente, operacional: operacional);
         }
     }
 }

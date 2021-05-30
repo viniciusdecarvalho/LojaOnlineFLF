@@ -1,13 +1,8 @@
-﻿using System;
-using System.IO;
-using FluentValidation;
+﻿using FluentValidation;
 using LojaOnlineFLF.DataModel;
-using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace LojaOnlineFLF.WebAPI
 {
@@ -33,6 +28,8 @@ namespace LojaOnlineFLF.WebAPI
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IValidator<FuncionarioTO>, FuncionarioValidator>();
             services.AddTransient<IValidator<Login>, AcessoValidator>();
+
+            //services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
             return services;
         }

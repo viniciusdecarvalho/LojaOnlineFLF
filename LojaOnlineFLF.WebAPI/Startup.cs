@@ -1,15 +1,21 @@
 using System;
+using System.Globalization;
+using FluentValidation;
 using FluentValidation.AspNetCore;
+using GlobalExceptionHandler.WebApi;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
 using LojaOnlineFLF.WebAPI.Filters;
+using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace LojaOnlineFLF.WebAPI
 {
@@ -35,11 +41,9 @@ namespace LojaOnlineFLF.WebAPI
                             .AllowAnyHeader());
             });
 
-            services.AddControllers(options => {
-                options.Filters.Add(typeof(TransactionFilter));
-                options.Filters.Add(typeof(ErrorFilter));
-            })
-            .AddFluentValidation();
+            services
+                .AddControllers()
+                .AddFluentValidation();
 
             services.AddDbContext<LojaEFContext>(opt => {
                 string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ??
@@ -57,6 +61,7 @@ namespace LojaOnlineFLF.WebAPI
             }).AddEntityFrameworkStores<LojaEFContext>();
             
             services.AddDependencyInjectConfig();
+            services.AddTransactionControlMiddleware();
             services.AddAutoMapperConfig();
             services.AddBearerAuthentication();            
             services.AddSwaggerGenConfig();
@@ -64,7 +69,7 @@ namespace LojaOnlineFLF.WebAPI
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LojaEFContext context)
-        {
+        {        
             if (env.IsProduction())
             {
                 context.Database.Migrate();
@@ -72,10 +77,12 @@ namespace LojaOnlineFLF.WebAPI
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-
                 app.UseSwaggerConfig();
             }
+
+            app.UseExceptionHandlerConfig();
+
+            app.UseTransactionControlMiddleware<LojaEFContext>();
 
             app.UseHttpsRedirection();
 
@@ -85,6 +92,17 @@ namespace LojaOnlineFLF.WebAPI
             app.UseAuthorization();
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "POST", "OPTIONS", "DELETE", "PUT"));
+
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("pt-BR");
+
+            var supportedCultures = new[] { K.Cultures.Default };
+            var localizationOptions = 
+                new RequestLocalizationOptions()                
+                    .SetDefaultCulture(K.Cultures.Default)
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {
