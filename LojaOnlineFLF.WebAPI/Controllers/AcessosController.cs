@@ -12,8 +12,8 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     /// </summary>
     [ApiController]
     [AllowAnonymous]
+    [Consumes(K.MediaTypes.AplicationJson)]
     [Produces(K.MediaTypes.AplicationJson)]
-    [ProducesErrorResponseType(typeof(ErrorInfoTO))]
     [Route("api/login")]
     public class AcessosController: ControllerBase
     {
