@@ -2,6 +2,7 @@
 using AutoMapper;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.WebAPI.Services.Models;
+using LojaOnlineFLF.WebAPI.Services.Models.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LojaOnlineFLF.WebAPI
@@ -10,12 +11,13 @@ namespace LojaOnlineFLF.WebAPI
     {
         public static IServiceCollection AddAutoMapperConfig(this IServiceCollection services)
         {           
-            services.AddTransient<IMapper>(factory => {
+            services.AddScoped<IMapper>(factory => {
                 var cargos = factory.GetService<ICargos>();
 
                 var config = new MapperConfiguration(cfg =>
                 {
                     cfg.AddProfile(new FuncionarioMapperProfile(cargos));
+                    cfg.AddProfile(new ProdutoMapperProfile());
                 });
 
                 IMapper mapper = config.CreateMapper();

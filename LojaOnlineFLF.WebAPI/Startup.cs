@@ -45,9 +45,9 @@ namespace LojaOnlineFLF.WebAPI
                 .AddControllers()
                 .AddFluentValidation();
 
-            services.AddDbContext<LojaEFContext>(opt => {
-                string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ??
-                                          Configuration.GetConnectionString("lojaonline");
+            services.AddDbContext<LojaEFContext>(opt =>
+            {
+                string connectionString = GetConnectionString();
 
                 opt.UseNpgsql(connectionString);
             });
@@ -67,6 +67,13 @@ namespace LojaOnlineFLF.WebAPI
             services.AddSwaggerGenConfig();
         }
 
+        private string GetConnectionString()
+        {
+            return
+                Environment.GetEnvironmentVariable("DB_CONNECTION") ??
+                Configuration.GetConnectionString("lojaonline");
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, LojaEFContext context)
         {        
@@ -75,10 +82,7 @@ namespace LojaOnlineFLF.WebAPI
                 context.Database.Migrate();
             }
 
-            if (env.IsDevelopment())
-            {
-                app.UseSwaggerConfig();
-            }
+            app.UseSwaggerConfig();
 
             app.UseExceptionHandlerConfig();
 
@@ -93,21 +97,21 @@ namespace LojaOnlineFLF.WebAPI
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "POST", "OPTIONS", "DELETE", "PUT"));
 
-            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("pt-BR");
+            //var supportedCultures = new[] { K.Cultures.Default };
+            //var localizationOptions = 
+            //    new RequestLocalizationOptions()                
+            //        .SetDefaultCulture(K.Cultures.Default)
+            //        .AddSupportedCultures(supportedCultures)
+            //        .AddSupportedUICultures(supportedCultures);
 
-            var supportedCultures = new[] { K.Cultures.Default };
-            var localizationOptions = 
-                new RequestLocalizationOptions()                
-                    .SetDefaultCulture(K.Cultures.Default)
-                    .AddSupportedCultures(supportedCultures)
-                    .AddSupportedUICultures(supportedCultures);
-
-            app.UseRequestLocalization(localizationOptions);
+            //app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("pt-BR");
         }
     }
 }

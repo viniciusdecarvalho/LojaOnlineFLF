@@ -54,7 +54,7 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         private async Task VerificarFuncionarioJaExistePorCpf(FuncionarioTO funcionario)
         {
-            var existe = await this.funcionariosProvider.ObterAsync(funcionario.Id);
+            var existe = await this.funcionariosProvider.ObterPorCpfAsync(funcionario.Cpf);
 
             if (existe != null)
             {
@@ -64,7 +64,7 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         private async Task VerificarFuncionarioJaExistePorIdAsync(FuncionarioTO funcionario)
         {
-            var existe = await this.funcionariosProvider.ObterPorCpfAsync(funcionario.Cpf);
+            var existe = await this.funcionariosProvider.ObterAsync(funcionario.Id ?? Guid.Empty);
 
             if (existe != null)
             {
@@ -87,7 +87,7 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         private void VerificarFuncionarioIdValido(FuncionarioTO funcionario)
         {
-            if (Guid.Empty.Equals(funcionario.Id))
+            if (Guid.Empty.Equals(funcionario.Id ?? Guid.Empty))
             {
                 throw new InvalidOperationException("identificador valido é necessario");
             }
@@ -100,7 +100,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         {
             VerificarFuncionarioIdValido(funcionario);
 
-            await this.funcionariosProvider.RemoverAsync(funcionario.Id);
+            await this.funcionariosProvider.RemoverAsync(funcionario.Id.Value);
         }
 
         ///<summary>

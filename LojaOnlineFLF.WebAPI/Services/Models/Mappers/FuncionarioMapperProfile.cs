@@ -3,7 +3,7 @@ using AutoMapper;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Models;
 
-namespace LojaOnlineFLF.WebAPI.Services.Models
+namespace LojaOnlineFLF.WebAPI.Services.Models.Mappers
 {
     public class FuncionarioMapperProfile: Profile
     {

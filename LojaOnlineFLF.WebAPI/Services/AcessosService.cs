@@ -45,7 +45,7 @@ namespace LojaOnlineFLF.WebAPI.Services
             {
                 var acesso = new Acesso()
                 {
-                    Funcionario = new Funcionario { Id = funcionario.Id },
+                    Funcionario = new Funcionario { Id = funcionario.Id.Value },
                     UserName = login.Usuario
                 };
 
@@ -73,7 +73,7 @@ namespace LojaOnlineFLF.WebAPI.Services
             {
                 var acesso = new Acesso()
                 {
-                    Funcionario = new Funcionario { Id = funcionario.Id},
+                    Funcionario = new Funcionario { Id = funcionario.Id.Value},
                     UserName = login.Usuario
                 };
 

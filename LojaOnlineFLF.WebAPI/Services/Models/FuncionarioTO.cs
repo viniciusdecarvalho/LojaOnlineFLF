@@ -12,7 +12,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         ///<summary>
         /// Id do cargo
         ///</summary>
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Nome do funcionario

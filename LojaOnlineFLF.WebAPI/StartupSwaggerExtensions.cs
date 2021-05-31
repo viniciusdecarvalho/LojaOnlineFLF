@@ -34,7 +34,7 @@ namespace LojaOnlineFLF.WebAPI
                                       .Cast<ResultNameAttribute>()
                                       .FirstOrDefault();
 
-                    return annotation?.NameAs ?? x.GetType().Name;
+                    return annotation?.NameAs ?? x.Name;
                 });
 
                 c.AddSecurityDefinition(Bearer, new OpenApiSecurityScheme

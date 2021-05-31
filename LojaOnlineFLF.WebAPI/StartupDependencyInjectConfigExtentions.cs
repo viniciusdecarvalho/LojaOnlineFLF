@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using LojaOnlineFLF.DataModel;
+using LojaOnlineFLF.DataModel.Repositories;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,24 +11,35 @@ namespace LojaOnlineFLF.WebAPI
     {        
         public static IServiceCollection AddDependencyInjectConfig(this IServiceCollection services)
         {
-            services.AddTransient<IRepositoryFactory, RepositoryFactory>();
-            services.AddTransient<IFuncionariosRepository>(servicesProvider => {
+            //Repositories
+            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+            services.AddScoped<IAcessosRepository>(servicesProvider => {
                 var factory = servicesProvider.GetService<IRepositoryFactory>();
-                return factory.CreateFuncionarios();
+                return factory.Create<IAcessosRepository>();
             });
-            services.AddTransient<IAcessosRepository>(servicesProvider => {
+            services.AddScoped<IFuncionariosRepository>(servicesProvider => {
                 var factory = servicesProvider.GetService<IRepositoryFactory>();
-                return factory.CreateAcessos();
+                return factory.Create<IFuncionariosRepository>();
             });
-            services.AddTransient<ICargos>(servicesProvider => {
+            services.AddScoped<IProdutosRepository>(servicesProvider => {
+                var factory = servicesProvider.GetService<IRepositoryFactory>();
+                return factory.Create<IProdutosRepository>();
+            });
+            services.AddScoped<ICargos>(servicesProvider => {
                 var factory = servicesProvider.GetService<IFuncionariosRepository>();
                 return factory.ObterCargosAsync().Result;
             });
-            services.AddTransient<IFuncionariosService, FuncionariosService>();
-            services.AddTransient<IAcessosService, AcessosService>();
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IValidator<FuncionarioTO>, FuncionarioValidator>();
-            services.AddTransient<IValidator<Login>, AcessoValidator>();
+
+            //Services
+            services.AddScoped<IFuncionariosService, FuncionariosService>();
+            services.AddScoped<IProdutosService, ProdutosService>();
+            services.AddScoped<IAcessosService, AcessosService>();
+            services.AddScoped<IAuthService, AuthService>();
+
+            //Validators
+            services.AddScoped<IValidator<FuncionarioTO>, FuncionarioValidator>();
+            services.AddScoped<IValidator<ProdutoTO>, ProdutoValidator>();
+            services.AddScoped<IValidator<Login>, AcessoValidator>();
 
             //services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 

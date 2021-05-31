@@ -45,7 +45,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterFuncionarios()
         {
-            var funcionarios = await this.funcionariosService.ObterTodosAsync();
+            IEnumerable<FuncionarioTO> funcionarios = await this.funcionariosService.ObterTodosAsync();
 
             return Ok(funcionarios);
         }
@@ -59,7 +59,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterFuncionarioPorId([FromRoute] Guid id)
         {
-            var funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
 
             if (funcionario is null)
             {
@@ -70,14 +70,14 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Adicionar funcionario por {id}
+        /// Adicionar funcionario
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AdicionarFuncionario([FromBody] FuncionarioTO funcionario)
         {
-            var novoFuncionario = await this.funcionariosService.AdicionarAsync(funcionario);
+            FuncionarioTO novoFuncionario = await this.funcionariosService.AdicionarAsync(funcionario);
 
             return Created($"api/funcionarios/{novoFuncionario.Id}", novoFuncionario);
         }
@@ -104,8 +104,8 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoverFuncionario([FromRoute] Guid id)
-        {   
-            var funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+        {
+            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
 
             if (funcionario is null)
             {
