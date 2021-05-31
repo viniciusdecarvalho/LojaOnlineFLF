@@ -17,6 +17,11 @@ namespace LojaOnlineFLF.DataModel.Providers
         {}
 
         ///<summary>
+        /// Manter dados de produtos
+        ///</summary>Í
+        public DbSet<Produto> Produtos { get; set; }
+
+        ///<summary>
         /// Manter dados de funcionarios
         ///</summary>Í
         public DbSet<Funcionario> Funcionarios { get; set; }
@@ -33,6 +38,9 @@ namespace LojaOnlineFLF.DataModel.Providers
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new FuncionarioEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CargoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ProdutoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AcessoEntityTypeConfiguration());
 
             base.OnModelCreating(modelBuilder);

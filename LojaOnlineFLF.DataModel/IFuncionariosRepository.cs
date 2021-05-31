@@ -5,18 +5,13 @@ using LojaOnlineFLF.DataModel.Models;
 
 namespace LojaOnlineFLF.DataModel
 {
-    public interface IFuncionariosRepository
-    {
-        Task IncluirAsync(Funcionario funcionario);
-
-        Task AtualizarAsync(Funcionario funcionario);
-
-        Task RemoverAsync(Guid id);
-
-        Task<IEnumerable<Funcionario>> ListarAsync();
-
-        Task<Funcionario> ObterAsync(Guid id);
-
+    public interface IFuncionariosRepository:
+        IRepositoryAddBehavior<Funcionario>,
+        IRepositoryUpdateBehavior<Funcionario>,
+        IRepositoryListAllBehavior<Funcionario>,
+        IRepositoryGetByIdBehavior<Funcionario>,
+        IRepositoryRemoveByIdBehavior<Funcionario>
+    {        
         Task<Funcionario> ObterPorCpfAsync(string usuario);
 
         Task<ICargos> ObterCargosAsync();

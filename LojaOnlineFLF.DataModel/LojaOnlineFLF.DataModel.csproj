@@ -17,6 +17,7 @@
     <Folder Include="Providers\" />
     <Folder Include="Models\" />
     <Folder Include="Models\Configuration\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />

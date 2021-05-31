@@ -2,8 +2,6 @@
 {
     public interface IRepositoryFactory
     {
-        IFuncionariosRepository CreateFuncionarios();
-
-        IAcessosRepository CreateAcessos();
+        T Create<T>() where T : class;
     }
 }

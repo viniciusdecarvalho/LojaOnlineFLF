@@ -6,7 +6,7 @@ using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
 using Microsoft.EntityFrameworkCore;
 
-namespace LojaOnlineFLF.DataModel
+namespace LojaOnlineFLF.DataModel.Repositories
 {
     internal class FuncionariosRepository: IFuncionariosRepository
     {

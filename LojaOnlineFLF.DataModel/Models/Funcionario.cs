@@ -40,6 +40,6 @@ namespace LojaOnlineFLF.DataModel.Models
         /// <summary>
         /// Data de encerramento do funcionario
         /// </summary>        
-        public bool Ativo { get; internal set; } = true;
+        public bool Ativo { get; set; } = true;
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LojaOnlineFLF.DataModel.Models;
-using LojaOnlineFLF.DataModel.Providers;
-using Microsoft.AspNetCore.Identity;
 
-namespace LojaOnlineFLF.DataModel
+namespace LojaOnlineFLF.DataModel.Repositories
 {
     internal class AcessoAdminRepository : IAcessosRepository
     {

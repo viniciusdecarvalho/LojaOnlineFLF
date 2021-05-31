@@ -6,7 +6,7 @@ using LojaOnlineFLF.DataModel.Providers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace LojaOnlineFLF.DataModel
+namespace LojaOnlineFLF.DataModel.Repositories
 {
     internal class AcessosRepository: IAcessosRepository
     {
