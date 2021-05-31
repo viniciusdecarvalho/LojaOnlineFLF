@@ -2,20 +2,15 @@ using System;
 using System.Globalization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using GlobalExceptionHandler.WebApi;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
-using LojaOnlineFLF.WebAPI.Filters;
-using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 
 namespace LojaOnlineFLF.WebAPI
 {
