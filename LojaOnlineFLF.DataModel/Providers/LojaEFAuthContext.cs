@@ -11,14 +11,13 @@ namespace LojaOnlineFLF.DataModel.Providers
         public LojaEFAuthContext(DbContextOptions<LojaEFAuthContext> options)
             : base(options)
         {
-            //irá criar o banco e a estrutura de tabelas necessárias
-            this.Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new FuncionarioEntityTypeConfiguration());
+            builder.ApplyConfiguration(new AcessoEntityTypeConfiguration());
             base.OnModelCreating(builder);
-            builder.ApplyConfiguration<Acesso>(new AcessoEntityTypeConfiguration());
         }
     }
 }

@@ -21,8 +21,15 @@ namespace LojaOnlineFLF.DataModel.Repositories
             this.userManager = userManager;
 
             this.Register<IAcessosRepository>((ctx, sign, user) => new AcessoAdminRepository(new AcessosRepository(ctx, sign, user)));
-            this.Register<IFuncionariosRepository>((ctx, sign, user) => new FuncionariosRepository(ctx));
-            this.Register<IProdutosRepository>((ctx, sign, user) => new ProdutosRepository(ctx));
+            this.Register<IFuncionariosRepository>((ctx) => new FuncionariosRepository(ctx));
+            this.Register<IProdutosRepository>((ctx) => new ProdutosRepository(ctx));
+            this.Register<IClientesRepository>((ctx) => new ClientesRepository(ctx));
+        }
+
+        internal RepositoryFactory Register<T>(Func<LojaEFContext, T> provider) where T : class
+        {
+            T c(LojaEFContext ctx, SignInManager<Acesso> sign, UserManager<Acesso> user) => provider.Invoke(ctx);
+            return this.Register<T>(c);
         }
 
         internal RepositoryFactory Register<T>(Func<LojaEFContext, SignInManager<Acesso>, UserManager<Acesso>, T> provider) where T: class
