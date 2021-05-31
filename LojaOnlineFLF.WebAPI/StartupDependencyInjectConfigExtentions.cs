@@ -25,6 +25,10 @@ namespace LojaOnlineFLF.WebAPI
                 var factory = servicesProvider.GetService<IRepositoryFactory>();
                 return factory.Create<IProdutosRepository>();
             });
+            services.AddScoped<IClientesRepository>(servicesProvider => {
+                var factory = servicesProvider.GetService<IRepositoryFactory>();
+                return factory.Create<IClientesRepository>();
+            });
             services.AddScoped<ICargos>(servicesProvider => {
                 var factory = servicesProvider.GetService<IFuncionariosRepository>();
                 return factory.ObterCargosAsync().Result;
@@ -32,14 +36,16 @@ namespace LojaOnlineFLF.WebAPI
 
             //Services
             services.AddScoped<IFuncionariosService, FuncionariosService>();
-            services.AddScoped<IProdutosService, ProdutosService>();
             services.AddScoped<IAcessosService, AcessosService>();
+            services.AddScoped<IProdutosService, ProdutosService>();
+            services.AddScoped<IClientesService, ClientesService>();
             services.AddScoped<IAuthService, AuthService>();
 
             //Validators
             services.AddScoped<IValidator<FuncionarioTO>, FuncionarioValidator>();
-            services.AddScoped<IValidator<ProdutoTO>, ProdutoValidator>();
             services.AddScoped<IValidator<Login>, AcessoValidator>();
+            services.AddScoped<IValidator<ProdutoTO>, ProdutoValidator>();
+            services.AddScoped<IValidator<ClienteTO>, ClienteValidator>();
 
             //services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 

@@ -18,6 +18,7 @@ namespace LojaOnlineFLF.WebAPI
                 {
                     cfg.AddProfile(new FuncionarioMapperProfile(cargos));
                     cfg.AddProfile(new ProdutoMapperProfile());
+                    cfg.AddProfile(new ClienteMapperProfile());
                 });
 
                 IMapper mapper = config.CreateMapper();

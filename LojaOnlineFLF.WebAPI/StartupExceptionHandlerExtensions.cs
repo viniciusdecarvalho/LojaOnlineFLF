@@ -55,7 +55,7 @@ namespace LojaOnlineFLF.WebAPI
                             Title = exception.Message,
                             Status = StatusCodes.Status400BadRequest,
                             Detail = exception.ToString(),
-                            Instance = context.Request.HttpContext.Request.Path                        
+                            Instance = context.Request.Path                        
                         };
 
                         var json = JsonConvert.SerializeObject(problemDetails);

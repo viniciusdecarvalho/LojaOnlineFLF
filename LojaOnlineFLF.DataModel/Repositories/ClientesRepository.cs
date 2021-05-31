@@ -31,12 +31,22 @@ namespace LojaOnlineFLF.DataModel.Repositories
 
         public async Task<Cliente> ObterAsync(Guid id)
         {
-            var produtos = await context.Clientes
+            var clientes = await context.Clientes
                                         .Where(f => f.Id == id)
                                         .AsNoTracking()
                                         .FirstOrDefaultAsync();
 
-            return produtos;
+            return clientes;
+        }
+
+        public async Task<Cliente> ObterPorCpfAsync(string cpf)
+        {
+            var clientes = await context.Clientes
+                                        .Where(f => f.Cpf == cpf)
+                                        .AsNoTracking()
+                                        .FirstOrDefaultAsync();
+
+            return clientes;
         }
 
         public async Task RemoverAsync(Guid id)

@@ -5,11 +5,12 @@ using LojaOnlineFLF.DataModel.Models;
 
 namespace LojaOnlineFLF.DataModel
 {
-    public interface IClientesRepository:
+    public interface IClientesRepository :
         IRepositoryAddBehavior<Cliente>,
         IRepositoryUpdateBehavior<Cliente>,
         IRepositoryGetByIdBehavior<Cliente>,
         IRepositoryRemoveByIdBehavior<Cliente>
     {
+        Task<Cliente> ObterPorCpfAsync(string cpf);
     }
 }

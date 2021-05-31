@@ -28,9 +28,10 @@ namespace LojaOnlineFLF.DataModel.Repositories
         {
             var acesso = await this.context.Acessos
                                    .Include(a => a.Funcionario)
-                                   .FirstOrDefaultAsync(a => a.UserName == usuario);
+                                   .FirstOrDefaultAsync(a => a.UserName == usuario)
+                                   ?? new Acesso() { UserName = usuario };
 
-            var signIn = await this.signInManager.CheckPasswordSignInAsync(acesso, senha, false);            
+            var signIn = await this.signInManager.CheckPasswordSignInAsync(acesso, senha, false);
 
             if (!signIn.Succeeded)
             {
