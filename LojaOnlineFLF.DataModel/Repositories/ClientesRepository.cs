@@ -51,7 +51,17 @@ namespace LojaOnlineFLF.DataModel.Repositories
 
         public async Task RemoverAsync(Guid id)
         {
-            var cliente = await this.ObterAsync(id);
+            var cliente = await this.context.Clientes.Include(c => c.Vendas).FirstOrDefaultAsync();
+
+            if (cliente is null)
+            {
+                throw new InvalidOperationException("cliente nao encontrado");
+            }
+
+            if (cliente.Vendas.Any())
+            {
+                throw new InvalidOperationException("cliente possui vendas registradas");
+            }
 
             this.context.Set<Cliente>().Remove(cliente);
         }

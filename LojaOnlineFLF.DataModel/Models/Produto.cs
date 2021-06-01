@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LojaOnlineFLF.DataModel.Models
 {
@@ -13,5 +14,7 @@ namespace LojaOnlineFLF.DataModel.Models
         public decimal PrecoVenda { get; set; }
 
         public bool Ativo { get; set; } = true;
+
+        public ICollection<Venda> Vendas { get; set; }
     }
 }

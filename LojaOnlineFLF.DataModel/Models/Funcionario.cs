@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LojaOnlineFLF.DataModel.Models
 {
@@ -41,5 +42,7 @@ namespace LojaOnlineFLF.DataModel.Models
         /// Data de encerramento do funcionario
         /// </summary>        
         public bool Ativo { get; set; } = true;
+
+        public ICollection<Venda> Vendas { get; set; } = new List<Venda>();
     }
 }

@@ -3,15 +3,17 @@ using System;
 using LojaOnlineFLF.DataModel.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LojaOnlineFLF.DataModel.Migrations
 {
     [DbContext(typeof(LojaEFContext))]
-    partial class LojaEFContextModelSnapshot : ModelSnapshot
+    [Migration("20210531043736_Venda")]
+    partial class Venda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,9 +180,6 @@ namespace LojaOnlineFLF.DataModel.Migrations
 
                     b.Property<Guid?>("FuncionarioId")
                         .HasColumnType("uuid");
-
-                    b.Property<byte>("Situacao")
-                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

@@ -17,6 +17,11 @@ namespace LojaOnlineFLF.DataModel.Providers
         {}
 
         ///<summary>
+        /// Manter dados de vendas
+        ///</summary>Í
+        public DbSet<Venda> Vendas { get; set; }
+
+        ///<summary>
         /// Manter dados de clientes
         ///</summary>Í
         public DbSet<Cliente> Clientes { get; set; }
@@ -48,6 +53,7 @@ namespace LojaOnlineFLF.DataModel.Providers
             modelBuilder.ApplyConfiguration(new CargoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProdutoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ClienteEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new VendaEntityTypeConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

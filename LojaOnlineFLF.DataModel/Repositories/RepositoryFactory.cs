@@ -24,6 +24,7 @@ namespace LojaOnlineFLF.DataModel.Repositories
             this.Register<IFuncionariosRepository>((ctx) => new FuncionariosRepository(ctx));
             this.Register<IProdutosRepository>((ctx) => new ProdutosRepository(ctx));
             this.Register<IClientesRepository>((ctx) => new ClientesRepository(ctx));
+            this.Register<IVendasRepository>((ctx) => new VendasRepository(ctx));
         }
 
         internal RepositoryFactory Register<T>(Func<LojaEFContext, T> provider) where T : class
