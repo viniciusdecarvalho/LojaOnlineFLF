@@ -179,8 +179,8 @@ namespace LojaOnlineFLF.DataModel.Migrations
                     b.Property<Guid?>("FuncionarioId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte>("Situacao")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("Situacao")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -239,11 +239,11 @@ namespace LojaOnlineFLF.DataModel.Migrations
             modelBuilder.Entity("LojaOnlineFLF.DataModel.Models.Venda", b =>
                 {
                     b.HasOne("LojaOnlineFLF.DataModel.Models.Cliente", "Cliente")
-                        .WithMany()
+                        .WithMany("Vendas")
                         .HasForeignKey("ClienteId");
 
                     b.HasOne("LojaOnlineFLF.DataModel.Models.Funcionario", "Funcionario")
-                        .WithMany()
+                        .WithMany("Vendas")
                         .HasForeignKey("FuncionarioId");
 
                     b.Navigation("Cliente");
@@ -267,6 +267,16 @@ namespace LojaOnlineFLF.DataModel.Migrations
             modelBuilder.Entity("LojaOnlineFLF.DataModel.Models.Cargo", b =>
                 {
                     b.Navigation("Funcionarios");
+                });
+
+            modelBuilder.Entity("LojaOnlineFLF.DataModel.Models.Cliente", b =>
+                {
+                    b.Navigation("Vendas");
+                });
+
+            modelBuilder.Entity("LojaOnlineFLF.DataModel.Models.Funcionario", b =>
+                {
+                    b.Navigation("Vendas");
                 });
 
             modelBuilder.Entity("LojaOnlineFLF.DataModel.Models.Venda", b =>
