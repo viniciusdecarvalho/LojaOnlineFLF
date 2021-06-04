@@ -9,8 +9,8 @@ namespace LojaOnlineFLF.DataModel
         IRepositoryAddBehavior<Funcionario>,
         IRepositoryUpdateBehavior<Funcionario>,
         IRepositoryListAllBehavior<Funcionario>,
-        IRepositoryGetByIdBehavior<Funcionario>,
-        IRepositoryRemoveByIdBehavior<Funcionario>
+        IRepositoryGetByIdBehavior<Funcionario, Guid>,
+        IRepositoryRemoveByIdBehavior<Guid>
     {        
         Task<Funcionario> ObterPorCpfAsync(string usuario);
 

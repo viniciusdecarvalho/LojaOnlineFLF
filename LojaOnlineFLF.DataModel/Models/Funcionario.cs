@@ -6,13 +6,8 @@ namespace LojaOnlineFLF.DataModel.Models
     ///<summary>
     /// Funcionario
     ///</summary>
-    public class Funcionario
+    public class Funcionario : EntityKey<Guid>
     {
-        ///<summary>
-        /// Id do cargo
-        ///</summary>                
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Nome do funcionario
         /// </summary>

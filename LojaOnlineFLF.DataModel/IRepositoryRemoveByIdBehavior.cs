@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.DataModel
 {
-    public interface IRepositoryRemoveByIdBehavior<T> where T: class
+    public interface IRepositoryRemoveByIdBehavior<E>
     {
-        Task RemoverAsync(Guid id);
+        Task RemoverAsync(E id);
     }
 }

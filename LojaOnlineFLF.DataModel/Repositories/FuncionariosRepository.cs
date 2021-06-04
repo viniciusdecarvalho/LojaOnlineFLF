@@ -10,28 +10,28 @@ namespace LojaOnlineFLF.DataModel.Repositories
 {
     internal class FuncionariosRepository: IFuncionariosRepository
     {
-        private readonly LojaEFContext context;
+        private RepositoryEF<Funcionario, Guid> funcionarios;
+        private RepositoryEF<Cargo, Guid> cargos;
 
         public FuncionariosRepository(LojaEFContext context)
         {
-            this.context = context;
+            this.funcionarios = new RepositoryEF<Funcionario, Guid>(context);
+            this.cargos = new RepositoryEF<Cargo, Guid>(context);
         }
 
         public async Task AtualizarAsync(Funcionario funcionario)
         {
-            await Task.Run(() =>
-                context.Set<Funcionario>().Update(funcionario)
-            );
+            await this.funcionarios.AtualizarAsync(funcionario);
         }
 
         public async Task IncluirAsync(Funcionario funcionario)
         {
-            await context.Set<Funcionario>().AddAsync(funcionario);
+            await this.funcionarios.IncluirAsync(funcionario);
         }
 
-        public async Task<IEnumerable<Funcionario>> ListarAsync()
+        public async Task<IEnumerable<Funcionario>> ListarTodosAsync()
         {
-            return await context.Funcionarios
+            return await this.funcionarios.Query
                                 .Include(f => f.Cargo)
                                 .Where(f => f.Ativo)
                                 .AsNoTracking()
@@ -40,17 +40,15 @@ namespace LojaOnlineFLF.DataModel.Repositories
 
         public async Task<Funcionario> ObterAsync(Guid id)
         {
-            var funcionario = await context.Funcionarios.Where(f => f.Id == id).AsNoTracking().FirstOrDefaultAsync();
-
-            return funcionario;
+            return await this.funcionarios.ObterAsync(id);
         }
 
         public async Task<Funcionario> ObterPorCpfAsync(string cpf)
         {
-            return await context.Funcionarios
-                          .Where(f => f.Cpf.Equals(cpf))
-                          .AsNoTracking()
-                          .FirstOrDefaultAsync();
+            return await this.funcionarios.Query
+                            .Where(f => f.Cpf.Equals(cpf))
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync();
         }
 
         public async Task RemoverAsync(Guid id)
@@ -69,12 +67,17 @@ namespace LojaOnlineFLF.DataModel.Repositories
 
         public async Task<ICargos> ObterCargosAsync()
         {
-            var cargos = await this.context.Cargos.ToListAsync();
+            var cargos = await this.cargos.Query.ToListAsync();
 
             var gerente = cargos.FirstOrDefault(c => c.Id == Cargo.Gerente);
             var operacional = cargos.FirstOrDefault(c => c.Id == Cargo.Operacional);
 
             return new Cargos(gerente: gerente, operacional: operacional);
+        }
+
+        public async Task<bool> ContemAsync(Guid id)
+        {
+            return await this.funcionarios.ContemAsync(id);
         }
     }
 }

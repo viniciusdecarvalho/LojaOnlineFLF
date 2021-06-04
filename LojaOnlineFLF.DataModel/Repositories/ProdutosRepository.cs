@@ -8,43 +8,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LojaOnlineFLF.DataModel.Repositories
 {
-    internal class ProdutosRepository : IProdutosRepository
+    internal class ProdutosRepository : IProdutosRepository, IRepositoryPossuiVendaBehavior<Produto>
     {
-        private readonly LojaEFContext context;
+        private RepositoryEF<Produto, Guid> produtos;
 
         public ProdutosRepository(LojaEFContext context)
         {
-            this.context = context;
+            this.produtos = new RepositoryEF<Produto, Guid>(context);
         }
 
-        public async Task AtualizarAsync(Produto entity)
+        public async Task AtualizarAsync(Produto produto)
         {
-            await Task.Run(() =>
-                context.Set<Produto>().Update(entity)
-            );
+            await this.produtos.AtualizarAsync(produto);
         }
 
-        public async Task IncluirAsync(Produto entity)
+        public async Task<bool> ContemAsync(Guid id)
         {
-            await context.Set<Produto>().AddAsync(entity);
+            return await this.produtos.ContemAsync(id);
         }
 
-        public async Task<IEnumerable<Produto>> ListarAsync()
+        public async Task IncluirAsync(Produto produto)
         {
-            return await context.Produtos
-                                .Where(p => p.Ativo)
-                                .AsNoTracking()
-                                .ToListAsync();
+            await this.produtos.IncluirAsync(produto);
+        }
+
+        public async Task<IEnumerable<Produto>> ListarTodosAsync()
+        {
+            return await this.produtos.Query
+                            .Where(p => p.Ativo)
+                            .AsNoTracking()
+                            .ToListAsync();
         }
 
         public async Task<Produto> ObterAsync(Guid id)
         {
-            var produtos = await context.Produtos
-                                           .Where(f => f.Id == id)
-                                           .AsNoTracking()
-                                           .FirstOrDefaultAsync();
-
-            return produtos;
+            return await this.produtos.ObterAsync(id);
         }
 
         public async Task<Produto> ObterPorCodigoDeBarrasAsync(string codigoBarras)
@@ -54,19 +52,33 @@ namespace LojaOnlineFLF.DataModel.Repositories
                 throw new ArgumentNullException(nameof(codigoBarras));
             }
 
-            return await context.Produtos
+            return await this.produtos.Query
                                 .Where(p => p.CodigoBarras == codigoBarras)
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync();
         }
 
+        public async Task<bool> PossuiVendas(Produto produto)
+        {
+            return 
+                await this.produtos.Context
+                                    .Set<Venda>()
+                                    .Include(v => v.Itens)
+                                    .AnyAsync(v => v.Itens.Any(i => i.Equals(produto.Id)));
+        }
+
         public async Task RemoverAsync(Guid id)
         {
-            var produto = await this.ObterAsync(id);
+            var produto = await this.produtos.ObterAsync(id);
 
             if (produto is null)
             {
-                throw new InvalidOperationException("funcionario nao encontrado");
+                throw new InvalidOperationException("produto nao encontrado");
+            }
+
+            if (await this.PossuiVendas(produto))
+            {
+                throw new InvalidOperationException("produto possui vendas registradas");
             }
 
             produto.Ativo = false;

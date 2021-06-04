@@ -9,8 +9,8 @@ namespace LojaOnlineFLF.DataModel
         IRepositoryAddBehavior<Produto>,
         IRepositoryUpdateBehavior<Produto>,
         IRepositoryListAllBehavior<Produto>,
-        IRepositoryGetByIdBehavior<Produto>,
-        IRepositoryRemoveByIdBehavior<Produto>
+        IRepositoryGetByIdBehavior<Produto, Guid>,
+        IRepositoryRemoveByIdBehavior<Guid>
     {
         Task<Produto> ObterPorCodigoDeBarrasAsync(string codigoBarras);
     }

@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LojaOnlineFLF.DataModel.Models
 {
-    public class Venda
+    public class Venda : EntityKey<Guid>
     {
-        public Guid Id { get; set; }
-
-        public DateTime Data { get; set; }
+        public DateTime Data { get; set; } = DateTime.Now;
 
         public Cliente Cliente { get; set; }
+        public Guid? ClienteId { get; set; }
 
         public Funcionario Funcionario { get; set; }
+        public Guid FuncionarioId { get; set; }
 
-        public VendaSituacao Situacao { get; set; }
+        public VendaSituacao Situacao { get; set; } = VendaSituacao.Aberta;
 
         public ICollection<VendaItem> Itens { get; set; } = new List<VendaItem>();
 
-        internal void Cancelar() => 
+        internal void Cancelar() =>
             this.Situacao?.Cancelar(this);
 
         internal void Concluir() =>

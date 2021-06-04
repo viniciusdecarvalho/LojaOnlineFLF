@@ -8,62 +8,71 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LojaOnlineFLF.DataModel.Repositories
 {
-    internal class ClientesRepository : IClientesRepository
+    internal class ClientesRepository : IClientesRepository, IRepositoryPossuiVendaBehavior<Cliente>
     {
-        private readonly LojaEFContext context;
+        private RepositoryEF<Cliente, Guid> clientes;
 
         public ClientesRepository(LojaEFContext context)
         {
-            this.context = context;
+            this.clientes = new RepositoryEF<Cliente, Guid>(context);
         }
 
         public async Task AtualizarAsync(Cliente entity)
         {
-            await Task.Run(() =>
-                context.Set<Cliente>().Update(entity)
-            );
+            await this.clientes.AtualizarAsync(entity);
+        }
+
+        public async Task<bool> ContemAsync(Guid id)
+        {
+            return await this.clientes.ContemAsync(id);
         }
 
         public async Task IncluirAsync(Cliente entity)
         {
-            await context.Set<Cliente>().AddAsync(entity);
+            await this.clientes.IncluirAsync(entity);
         }
 
         public async Task<Cliente> ObterAsync(Guid id)
         {
-            var clientes = await context.Clientes
-                                        .Where(f => f.Id == id)
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync();
+            return await this.clientes.ObterAsync(id);
+        }
+
+        public async Task<IEnumerable<Cliente>> ObterPorCpfAsync(string cpf)
+        {
+            var clientes =
+                await this.clientes.Query
+                                    .Where(f => f.Cpf.Equals(cpf))
+                                    .AsNoTracking()
+                                    .ToListAsync();
 
             return clientes;
         }
 
-        public async Task<Cliente> ObterPorCpfAsync(string cpf)
+        public async Task<bool> PossuiVendas(Cliente cliente)
         {
-            var clientes = await context.Clientes
-                                        .Where(f => f.Cpf == cpf)
-                                        .AsNoTracking()
-                                        .FirstOrDefaultAsync();
+            var possuiVendas =
+                await this.clientes.Context
+                            .Set<Venda>()
+                            .AnyAsync(v => v.ClienteId.Equals(cliente.Id));
 
-            return clientes;
+            return possuiVendas;
         }
 
         public async Task RemoverAsync(Guid id)
         {
-            var cliente = await this.context.Clientes.Include(c => c.Vendas).FirstOrDefaultAsync();
+            var cliente = await this.clientes.ObterAsync(id);
 
             if (cliente is null)
             {
                 throw new InvalidOperationException("cliente nao encontrado");
             }
 
-            if (cliente.Vendas.Any())
+            if (await this.PossuiVendas(cliente))
             {
                 throw new InvalidOperationException("cliente possui vendas registradas");
             }
 
-            this.context.Set<Cliente>().Remove(cliente);
+            await this.clientes.RemoverAsync(id);
         }
     }
 }

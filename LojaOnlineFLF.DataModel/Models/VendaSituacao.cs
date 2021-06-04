@@ -76,14 +76,14 @@ namespace LojaOnlineFLF.DataModel.Models
             venda.Situacao = VendaSituacao.Cancelada;
 
         public override void Concluir(Venda venda) =>
-            venda.Situacao = VendaSituacao.Cancelada;
+            venda.Situacao = VendaSituacao.Concluida;
 
         public override bool PodeExcluir(Venda venda) => true;
     }
 
     public class VendaConcluida : VendaSituacao
     {
-        public VendaConcluida() : base(1, nameof(VendaAberta)) { }
+        public VendaConcluida() : base(1, nameof(VendaConcluida)) { }
 
         public override void Abrir(Venda venda) =>
             venda.Situacao = VendaSituacao.Aberta;
@@ -97,7 +97,7 @@ namespace LojaOnlineFLF.DataModel.Models
 
     public class VendaCancelada : VendaSituacao
     {
-        public VendaCancelada() : base(2, nameof(VendaAberta)) { }
+        public VendaCancelada() : base(2, nameof(VendaCancelada)) { }
 
         public override void Abrir(Venda venda) =>
             venda.Situacao = VendaSituacao.Aberta;

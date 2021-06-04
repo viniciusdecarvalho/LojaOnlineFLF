@@ -26,10 +26,11 @@ namespace LojaOnlineFLF.DataModel.Repositories
 
         public async Task<Funcionario> LoginAsync(string usuario, string senha)
         {
-            var acesso = await this.context.Acessos
+            var acesso = await this.context.Acessos                                   
                                    .Include(a => a.Funcionario)
-                                   .FirstOrDefaultAsync(a => a.UserName == usuario)
-                                   ?? new Acesso() { UserName = usuario };
+                                   .Where(a => a.UserName == usuario)
+                                   .DefaultIfEmpty(new Acesso() { UserName = usuario })
+                                   .FirstOrDefaultAsync();
 
             var signIn = await this.signInManager.CheckPasswordSignInAsync(acesso, senha, false);
 

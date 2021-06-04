@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace LojaOnlineFLF.DataModel.Models
 {
-    public class Produto
+    public class Produto : EntityKey<Guid>
     {
-        public Guid Id { get; set; }
-
         public string Nome { get; set; }
 
         public string CodigoBarras { get; set; }

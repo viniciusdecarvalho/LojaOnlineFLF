@@ -8,9 +8,9 @@ namespace LojaOnlineFLF.DataModel
     public interface IClientesRepository :
         IRepositoryAddBehavior<Cliente>,
         IRepositoryUpdateBehavior<Cliente>,
-        IRepositoryGetByIdBehavior<Cliente>,
-        IRepositoryRemoveByIdBehavior<Cliente>
+        IRepositoryGetByIdBehavior<Cliente, Guid>,
+        IRepositoryRemoveByIdBehavior<Guid>
     {
-        Task<Cliente> ObterPorCpfAsync(string cpf);
+        Task<IEnumerable<Cliente>> ObterPorCpfAsync(string cpf);        
     }
 }

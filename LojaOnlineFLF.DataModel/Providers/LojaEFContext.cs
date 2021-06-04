@@ -21,6 +21,8 @@ namespace LojaOnlineFLF.DataModel.Providers
         ///</summary>Í
         public DbSet<Venda> Vendas { get; set; }
 
+        public DbSet<VendaItem> VendasItens { get; set; }
+
         ///<summary>
         /// Manter dados de clientes
         ///</summary>Í
