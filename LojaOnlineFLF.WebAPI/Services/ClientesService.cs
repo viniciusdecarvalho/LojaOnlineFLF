@@ -68,11 +68,16 @@ namespace LojaOnlineFLF.WebAPI.Services
             return this.mapper.Map<ClienteTO>(cliente);
         }
 
-        public async Task<ClienteTO> ObterPorCpfAsync(string cpf)
+        public async Task<IEnumerable<ClienteTO>> ObterPorCpfAsync(string cpf)
         {
-            var cliente = await this.clientesProvider.ObterPorCpfAsync(cpf);
+            var clientes = await this.clientesProvider.ObterPorCpfAsync(cpf);
 
-            return this.mapper.Map<ClienteTO>(cliente);
+            return this.mapper.Map<IEnumerable<ClienteTO>>(clientes);
+        }
+
+        public async Task<bool> ContemAsync(Guid id)
+        {
+            return await this.clientesProvider.ContemAsync(id);
         }
     }
 }

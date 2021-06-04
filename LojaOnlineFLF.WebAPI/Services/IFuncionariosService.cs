@@ -34,5 +34,12 @@ namespace LojaOnlineFLF.WebAPI.Services
         /// Buscar todos os funcionarios
         ///</summary>
         Task<IEnumerable<FuncionarioTO>> ObterTodosAsync();
+
+        /// <summary>
+        /// true para cliente com id informado existir, false caso contrario
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>bool</returns>
+        Task<bool> ContemAsync(Guid id);
     }
 }

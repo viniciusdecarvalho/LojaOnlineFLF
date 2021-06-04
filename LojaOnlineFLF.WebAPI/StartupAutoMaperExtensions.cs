@@ -1,7 +1,5 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using LojaOnlineFLF.DataModel;
-using LojaOnlineFLF.WebAPI.Services.Models;
 using LojaOnlineFLF.WebAPI.Services.Models.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +17,7 @@ namespace LojaOnlineFLF.WebAPI
                     cfg.AddProfile(new FuncionarioMapperProfile(cargos));
                     cfg.AddProfile(new ProdutoMapperProfile());
                     cfg.AddProfile(new ClienteMapperProfile());
+                    cfg.AddProfile(new VendaMapperProfile());
                 });
 
                 IMapper mapper = config.CreateMapper();

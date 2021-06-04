@@ -16,5 +16,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         Task AtualizarAsync(ProdutoTO produto);
 
         Task RemoverAsync(ProdutoTO produto);
+
+        Task<bool> ContemAsync(Guid id);
     }
 }

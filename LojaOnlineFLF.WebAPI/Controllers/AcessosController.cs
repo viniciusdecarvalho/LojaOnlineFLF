@@ -34,6 +34,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Realizar login, recuperar token de acesso ao servico
         /// </summary>
+        /// <remarks>Gerar token para acesso ao restante da api. Incluir token como cabecalho das requisicoes no atributo Authorization, com valor 'Bearer ' seguido do token recuperado</remarks>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

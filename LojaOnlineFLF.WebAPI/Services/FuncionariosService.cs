@@ -40,7 +40,7 @@ namespace LojaOnlineFLF.WebAPI.Services
             var entity = this.mapper.Map<Funcionario>(funcionario);
 
             await this.funcionariosProvider.IncluirAsync(entity);
-
+            
             return this.mapper.Map<FuncionarioTO>(entity);
         }
 
@@ -118,9 +118,14 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///</summary>
         public async Task<IEnumerable<FuncionarioTO>> ObterTodosAsync() 
         {            
-            var funcionarios = await this.funcionariosProvider.ListarAsync();
+            var funcionarios = await this.funcionariosProvider.ListarTodosAsync();
 
             return funcionarios.Select(this.mapper.Map<FuncionarioTO>).ToList();
+        }
+
+        public async Task<bool> ContemAsync(Guid id)
+        {
+            return await this.funcionariosProvider.ContemAsync(id);
         }
     }
 }

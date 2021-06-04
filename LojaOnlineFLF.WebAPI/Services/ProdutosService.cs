@@ -73,9 +73,14 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///</summary>
         public async Task<IEnumerable<ProdutoTO>> ObterTodosAsync() 
         {            
-            var produtos = await this.produtosProvider.ListarAsync();
+            var produtos = await this.produtosProvider.ListarTodosAsync();
 
             return produtos.Select(this.mapper.Map<ProdutoTO>).ToList();
+        }
+
+        public Task<bool> ContemAsync(Guid id)
+        {
+            return this.produtosProvider.ContemAsync(id);
         }
     }
 }
