@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using FluentValidation;
 using GlobalExceptionHandler.WebApi;
 using LojaOnlineFLF.DataModel;
@@ -54,7 +57,7 @@ namespace LojaOnlineFLF.WebAPI
                         {
                             Title = exception.Message,
                             Status = StatusCodes.Status400BadRequest,
-                            Detail = exception.ToString(),
+                            Detail = exception.StackMessage(),
                             Instance = context.Request.Path                        
                         };
 
@@ -68,6 +71,22 @@ namespace LojaOnlineFLF.WebAPI
             });
 
             return app;
+        }
+
+        public static string StackMessage(this Exception exception)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            var ex = exception;
+
+            while (ex != null)
+            {
+                builder.Insert(0, ex.Message).AppendLine();
+
+                ex = ex.InnerException;
+            }
+
+            return builder.ToString();
         }
     }
 }
