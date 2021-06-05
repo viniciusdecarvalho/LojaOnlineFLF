@@ -7,7 +7,9 @@ namespace LojaOnlineFLF.DataModel.Models.Configuration
     public class ProdutoEntityTypeConfiguration : IEntityTypeConfiguration<Produto>
     {        
         public void Configure(EntityTypeBuilder<Produto> builder)
-        {            
+        {
+            builder
+                .HasAlternateKey(a => a.CodigoBarras);
         }
     }
 }

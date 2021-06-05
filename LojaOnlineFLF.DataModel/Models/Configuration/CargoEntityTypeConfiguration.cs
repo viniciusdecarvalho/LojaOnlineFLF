@@ -14,6 +14,9 @@ namespace LojaOnlineFLF.DataModel.Models.Configuration
                 .WithOne(x => x.Cargo)
                 .HasForeignKey(x => x.AcessoId);
             */
+
+            builder
+                .HasAlternateKey(a => a.Nome);
         }
     }
 }
