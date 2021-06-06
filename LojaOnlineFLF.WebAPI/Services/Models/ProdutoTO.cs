@@ -3,15 +3,19 @@ using LojaOnlineFLF.WebAPI.Services.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models
 {
-    [ResultName("Produto")]
-    public class ProdutoTO
+    [ResultName("ProdutoCadastro")]
+    public class ProdutoCadastroTO
     {
-        public Guid? Id { get; set; }
-
         public string Nome { get; set; }
 
         public string CodBarras { get; set; }
 
         public decimal? Preco { get; set; }
+    }
+
+    [ResultName("Produto")]
+    public class ProdutoTO: ProdutoCadastroTO
+    {
+        public Guid Id { get; set; }
     }
 }

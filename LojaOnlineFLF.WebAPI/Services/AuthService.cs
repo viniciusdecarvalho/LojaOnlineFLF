@@ -9,28 +9,48 @@ namespace LojaOnlineFLF.WebAPI.Services
 {
     public class AuthService: IAuthService
     {
-        public AuthService()
+        public Autenticacao Autenticar(AfirmacaoTO afirmacao)
         {
-        }
-
-        public string ObterToken(AfirmacaoTO afirmacao)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(K.Auth.SecurityKey);
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            try
             {
-                SigningCredentials = credentials,
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, afirmacao.Usuario),
-                    new Claim(ClaimTypes.Role, afirmacao.Regra)
-                }),
-                Expires = DateTime.UtcNow.AddHours(2),
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(K.Auth.SecurityKey);
+                var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
 
-            return tokenHandler.WriteToken(token);
+                ClaimsIdentity subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Name, afirmacao.Usuario),
+                    new Claim(JwtRegisteredClaimNames.Jti, afirmacao.Regra)
+                });
+
+                DateTime dataCriacao = DateTime.UtcNow;
+                DateTime expiracao = dataCriacao.AddHours(2);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    SigningCredentials = credentials,
+                    Subject = subject,
+                    Expires = expiracao,
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                string tokenString = tokenHandler.WriteToken(token);
+
+                Autenticacao autenticacao = new Autenticacao
+                {
+                    Usuario = afirmacao.Usuario,
+                    DataCriacao = dataCriacao,
+                    DataExpiracao = expiracao,
+                    Token = tokenString
+                };
+
+                return autenticacao;
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar gerar informacoes de autenticacao", e);
+            }
         }
     }
 }

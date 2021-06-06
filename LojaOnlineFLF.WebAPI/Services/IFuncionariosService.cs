@@ -23,7 +23,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///<summary>
         /// Adicionar novo funcionario
         ///</summary>
-        Task RemoverAsync(FuncionarioTO funcionario);
+        Task RemoverAsync(Guid id);
 
         ///<summary>
         /// Buscar funcionario por id

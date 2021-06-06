@@ -27,6 +27,11 @@ namespace LojaOnlineFLF.DataModel.Repositories
             return await this.produtos.ContemAsync(id);
         }
 
+        public async Task<bool> ContemCodigoBarrasAsync(string codigoBarras)
+        {
+            return await this.produtos.Query.Where(p => p.CodigoBarras.Equals(codigoBarras)).AnyAsync();
+        }
+
         public async Task IncluirAsync(Produto produto)
         {
             await this.produtos.IncluirAsync(produto);

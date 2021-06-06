@@ -39,6 +39,11 @@ namespace LojaOnlineFLF.DataModel.Repositories
             var venda = await this.ObterAsync(id);
             ChecarVenda(venda);
 
+            if (!venda.Itens.Any())
+            {
+                throw new InvalidOperationException("venda nao possui itens");
+            }
+
             venda.Concluir();
 
             await this.AtualizarAsync(venda);

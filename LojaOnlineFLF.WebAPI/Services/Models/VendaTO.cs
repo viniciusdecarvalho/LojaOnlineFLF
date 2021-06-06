@@ -4,12 +4,20 @@ using LojaOnlineFLF.WebAPI.Services.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models
 {
+    [ResultName("VendaCliente")]
+    public class VendaClienteTO
+    {
+        public string Cpf { get; set; }
+
+        public string Fone { get; set; }
+    }
+
     [ResultName("VendaCadastro")]
     public class VendaCadastroTO
     {
-        public Guid? ClienteId { get; set; }
+        public VendaClienteTO Cliente { get; set; }
 
-        public Guid? FuncionarioId { get; set; }
+        public Guid FuncionarioId { get; set; }
     }
 
     [ResultName("VendaCadastrada")]
@@ -30,11 +38,11 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         [ResultName("ItemVenda")]
         public class ItemTO
         {
-            public Guid? ProdutoId { get; set; }
+            public Guid ProdutoId { get; set; }
 
-            public int? Quantidade { get; set; }
+            public int Quantidade { get; set; }
 
-            public decimal? Valor { get; set; }
+            public decimal Valor { get; set; }
         }
     }
 }

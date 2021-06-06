@@ -54,19 +54,19 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar cliente por {cpf}
         /// </summary>
         [HttpGet("cpf/{cpf}")]
-        [ProducesResponseType(typeof(IEnumerable<ClienteTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ClienteTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterClientesPorCpf([FromRoute] string cpf)
         {
-            IEnumerable<ClienteTO> clientes = await this.clientesService.ObterPorCpfAsync(cpf);
+            ClienteTO cliente = await this.clientesService.ObterPorCpfAsync(cpf);
 
-            if (clientes is null)
+            if (cliente is null)
             {
                 return NotFound();
             }
 
-            return Ok(clientes);
+            return Ok(cliente);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return NotFound();
             }
 
-            await this.clientesService.RemoverAsync(cliente);
+            await this.clientesService.RemoverAsync(id);
 
             return NoContent();
         }

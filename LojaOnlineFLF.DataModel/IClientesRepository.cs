@@ -11,6 +11,8 @@ namespace LojaOnlineFLF.DataModel
         IRepositoryGetByIdBehavior<Cliente, Guid>,
         IRepositoryRemoveByIdBehavior<Guid>
     {
-        Task<IEnumerable<Cliente>> ObterPorCpfAsync(string cpf);        
+        Task<Cliente> ObterPorCpfAsync(string cpf);
+
+        Task<Cliente> ObterPorFoneAsync(string fone);
     }
 }

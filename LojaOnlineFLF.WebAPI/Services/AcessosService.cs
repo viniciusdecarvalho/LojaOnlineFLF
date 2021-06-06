@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using AutoMapper;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.WebAPI.Services.Models;
@@ -16,14 +12,14 @@ namespace LojaOnlineFLF.WebAPI.Services
     public class AcessosService: IAcessosService
     {
         private readonly IAcessosRepository acessosRepository;
-        private readonly IMapper mapper;
+        private readonly IMapperService mapper;
 
         ///<summary>
         /// Construtor
         ///</summary>
         public AcessosService(
             IAcessosRepository acessosRepository,
-            IMapper mapper)
+            IMapperService mapper)
         {
             this.acessosRepository = acessosRepository;
             this.mapper = mapper;
@@ -53,7 +49,7 @@ namespace LojaOnlineFLF.WebAPI.Services
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException($"falha ao registrar acesso. {e.Message}");
+                throw new ServiceException($"falha ao registrar acesso", e);
             }
         }
 
@@ -81,7 +77,7 @@ namespace LojaOnlineFLF.WebAPI.Services
             }
             catch(Exception e)
             {
-                throw new InvalidOperationException($"falha ao registrar acesso. {e.Message}");
+                throw new ServiceException($"falha ao alterar acesso", e);
             }
         }
 
@@ -90,16 +86,23 @@ namespace LojaOnlineFLF.WebAPI.Services
             if (acessoTO is null)
             {
                 throw new ArgumentNullException("informacoes de acesso nao informados", nameof(acessoTO));
-            }            
-
-            Funcionario funcionario = await this.acessosRepository.LoginAsync(acessoTO.Usuario, acessoTO.Senha);
-
-            if (funcionario is null)
-            {
-                throw new InvalidOperationException("funcionario nao encontrado");
             }
 
-            return mapper.Map<FuncionarioTO>(funcionario);
+            try
+            {
+                Funcionario funcionario = await this.acessosRepository.LoginAsync(acessoTO.Usuario, acessoTO.Senha);
+
+                if (funcionario is null)
+                {
+                    throw new InvalidOperationException("funcionario nao encontrado");
+                }
+
+                return mapper.Map<FuncionarioTO>(funcionario);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao validar acesso", e);
+            }
         }
     }
 }

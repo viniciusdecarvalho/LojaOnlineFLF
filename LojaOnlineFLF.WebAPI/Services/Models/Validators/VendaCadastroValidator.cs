@@ -13,25 +13,18 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         /// Construtor padrao
         ///</summary>
         public VendaCadastroValidator(
-            IFuncionariosService funcionariosService,
-            IClientesService clientesService
+            IFuncionariosService funcionariosService
             )
         {
             const string FuncionarioInvalidoMensagem = "funcionario invalido";
             this.RuleFor(x => x.FuncionarioId)
                 .NotNull()
-                .MustAsync(async (x, c) => await funcionariosService.ContemAsync(x.GetValueOrDefault(Guid.Empty)))
+                .MustAsync((x, c) => funcionariosService.ContemAsync(x))
                 .WithMessage(FuncionarioInvalidoMensagem);
 
-            this.RuleFor(x => x.ClienteId)
-                .MustAsync(async (x, c) =>
-                {
-                    if (x == null)
-                        return true;
-
-                    return await clientesService.ContemAsync(x.GetValueOrDefault(Guid.Empty));
-                })
-                .WithMessage(FuncionarioInvalidoMensagem);
+            this.RuleFor(x => x.Cliente)
+                .ChildRules(c => c.RuleFor(x => x.Cpf)
+                                  .DeveRespeitarFormatacaoCpf());
         }
     }
 }

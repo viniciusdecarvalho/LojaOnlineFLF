@@ -11,7 +11,7 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         Task<IEnumerable<VendaTO>> ObterPorCpfClienteAsync(string cpf);
 
-        Task<VendaTO> AlterarItemAsync(VendaTO venda, ProdutoTO produto, int? quantidade);
+        Task<VendaTO> AlterarItensAsync(Guid id, params VendaItemTO[] itens);
 
         Task CancelarVendaAsync(VendaTO venda);
 
@@ -26,5 +26,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         Task<bool> ContemAsync(Guid id);
 
         Task<VendaTO> AlterarVendaAsync(VendaCadastradaTO venda);
+
+        Task<IEnumerable<VendaTO>> ObterVendasPorData(DateTime data);
     }
 }

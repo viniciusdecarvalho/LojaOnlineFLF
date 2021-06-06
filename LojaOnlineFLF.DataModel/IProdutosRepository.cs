@@ -13,5 +13,7 @@ namespace LojaOnlineFLF.DataModel
         IRepositoryRemoveByIdBehavior<Guid>
     {
         Task<Produto> ObterPorCodigoDeBarrasAsync(string codigoBarras);
+
+        Task<bool> ContemCodigoBarrasAsync(string codigoBarras);
     }
 }

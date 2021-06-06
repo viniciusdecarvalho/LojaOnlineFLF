@@ -37,15 +37,20 @@ namespace LojaOnlineFLF.DataModel.Repositories
             return await this.clientes.ObterAsync(id);
         }
 
-        public async Task<IEnumerable<Cliente>> ObterPorCpfAsync(string cpf)
+        public async Task<Cliente> ObterPorCpfAsync(string cpf)
         {
-            var clientes =
-                await this.clientes.Query
-                                    .Where(f => f.Cpf.Equals(cpf))
-                                    .AsNoTracking()
-                                    .ToListAsync();
+            var cliente =
+                await this.clientes.Query.FirstOrDefaultAsync(c => c.Cpf == cpf);
 
-            return clientes;
+            return cliente;
+        }
+
+        public async Task<Cliente> ObterPorFoneAsync(string fone)
+        {
+            var cliente =
+                await this.clientes.Query.LastOrDefaultAsync(c => c.Fone == fone);
+
+            return cliente;
         }
 
         public async Task<bool> PossuiVendas(Cliente cliente)

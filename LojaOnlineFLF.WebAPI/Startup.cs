@@ -35,9 +35,14 @@ namespace LojaOnlineFLF.WebAPI
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
-
+            
             services
                 .AddControllers()
+                .AddXmlSerializerFormatters()
+                .AddJsonOptions(config => {
+                    config.JsonSerializerOptions.IgnoreNullValues = true;
+                    config.JsonSerializerOptions.WriteIndented = false;
+                })
                 .AddFluentValidation();
 
             services.AddDbContext<LojaEFContext>(opt =>
@@ -58,8 +63,9 @@ namespace LojaOnlineFLF.WebAPI
             services.AddDependencyInjectConfig();
             services.AddTransactionControlMiddleware();
             services.AddAutoMapperConfig();
-            services.AddBearerAuthentication();            
+            services.AddBearerAuthentication();   
             services.AddSwaggerGenConfig();
+            services.AddCompressionConfig();
         }
 
         private string GetConnectionString()
@@ -81,6 +87,8 @@ namespace LojaOnlineFLF.WebAPI
 
             app.UseExceptionHandlerConfig();
 
+            app.UseCompressionConfig();
+
             app.UseTransactionControlMiddleware<LojaEFContext>();
 
             app.UseHttpsRedirection();
@@ -90,7 +98,7 @@ namespace LojaOnlineFLF.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "POST", "OPTIONS", "DELETE", "PUT"));
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
 
             //var supportedCultures = new[] { K.Cultures.Default };
             //var localizationOptions = 

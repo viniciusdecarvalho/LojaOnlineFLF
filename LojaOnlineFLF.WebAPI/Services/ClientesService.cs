@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.WebAPI.Services.Models;
@@ -15,14 +14,14 @@ namespace LojaOnlineFLF.WebAPI.Services
     public class ClientesService : IClientesService
     {
         private readonly IClientesRepository clientesProvider;
-        private readonly IMapper mapper;
+        private readonly IMapperService mapper;
 
         ///<summary>
         /// Construtor
         ///</summary>
         public ClientesService(
             IClientesRepository clientesRepository,
-            IMapper mapper)
+            IMapperService mapper)
         {
             this.clientesProvider = clientesRepository;
             this.mapper = mapper;
@@ -33,11 +32,18 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///</summary>
         public async Task<ClienteTO> AdicionarAsync(ClienteTO produto)
         {
-            var entity = this.mapper.Map<Cliente>(produto);
+            try
+            {
+                var entity = this.mapper.Map<Cliente>(produto);
 
-            await this.clientesProvider.IncluirAsync(entity);
+                await this.clientesProvider.IncluirAsync(entity);
 
-            return this.mapper.Map<ClienteTO>(entity);
+                return this.mapper.Map<ClienteTO>(entity);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar adicionar novo cliente", e);
+            }
         }
       
         ///<summary>
@@ -45,39 +51,73 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///</summary>
         public async Task AtualizarAsync(ClienteTO cliente) 
         {
-            var entity = this.mapper.Map<Cliente>(cliente);
+            try
+            {
+                var entity = this.mapper.Map<Cliente>(cliente);
 
-            await this.clientesProvider.AtualizarAsync(entity);
+                await this.clientesProvider.AtualizarAsync(entity);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar atualizar cliente", e);
+            }
         }
 
         ///<summary>
         /// Remover cliente
         ///</summary>
-        public async Task RemoverAsync(ClienteTO cliente)
+        public async Task RemoverAsync(Guid id)
         {
-            await this.clientesProvider.RemoverAsync(cliente.Id ?? Guid.Empty);
+            try
+            {
+                await this.clientesProvider.RemoverAsync(id);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar remover cliente", e);
+            }
         }
 
         ///<summary>
         /// Buscar cliente por id
         ///</summary>
         public async Task<ClienteTO> ObterPorIdAsync(Guid id) 
-        {            
-            var cliente = await this.clientesProvider.ObterAsync(id);
-
-            return this.mapper.Map<ClienteTO>(cliente);
-        }
-
-        public async Task<IEnumerable<ClienteTO>> ObterPorCpfAsync(string cpf)
         {
-            var clientes = await this.clientesProvider.ObterPorCpfAsync(cpf);
+            try
+            {
+                var cliente = await this.clientesProvider.ObterAsync(id);
 
-            return this.mapper.Map<IEnumerable<ClienteTO>>(clientes);
+                return this.mapper.Map<ClienteTO>(cliente);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar obter cliente por id", e);
+            }
         }
 
+        public async Task<ClienteTO> ObterPorCpfAsync(string cpf)
+        {
+            try
+            {
+                var cliente = await this.clientesProvider.ObterPorCpfAsync(cpf);
+                return this.mapper.Map<ClienteTO>(cliente);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar obter cliente por cpf", e);
+            }
+        }
+        
         public async Task<bool> ContemAsync(Guid id)
         {
-            return await this.clientesProvider.ContemAsync(id);
+            try
+            {
+                return await this.clientesProvider.ContemAsync(id);
+            }
+            catch(Exception e)
+            {
+                throw new ServiceException("falha ao tentar buscar cliente", e);
+            }
         }
     }
 }

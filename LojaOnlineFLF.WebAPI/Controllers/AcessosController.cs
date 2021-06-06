@@ -36,7 +36,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// </summary>
         /// <remarks>Gerar token para acesso ao restante da api. Incluir token como cabecalho das requisicoes no atributo Authorization, com valor 'Bearer ' seguido do token recuperado</remarks>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Autenticacao), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ValidarAcesso(Login acesso)
@@ -48,10 +48,10 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return Unauthorized();
             }
 
-            string token =
-                this.authService.ObterToken(new AfirmacaoTO(acesso.Usuario, funcionario.Id.ToString()));
+            var autenticacao =
+                this.authService.Autenticar(new AfirmacaoTO(acesso.Usuario, funcionario.Id.ToString()));
 
-            return Ok(token);
+            return base.Ok(autenticacao);
         }
     }
 }

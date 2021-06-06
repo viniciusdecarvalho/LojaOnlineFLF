@@ -3,6 +3,7 @@ using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Repositories;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LojaOnlineFLF.WebAPI
@@ -45,17 +46,19 @@ namespace LojaOnlineFLF.WebAPI
             services.AddScoped<IClientesService, ClientesService>();
             services.AddScoped<IVendasService, VendasService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMapperService, MapperService>();
 
             //Validators
             services.AddScoped<IValidator<FuncionarioTO>, FuncionarioValidator>();
             services.AddScoped<IValidator<Login>, AcessoValidator>();
+            services.AddScoped<IValidator<ProdutoCadastroTO>, ProdutoCadastroValidator>();
             services.AddScoped<IValidator<ProdutoTO>, ProdutoValidator>();
             services.AddScoped<IValidator<ClienteTO>, ClienteValidator>();
+            services.AddScoped<IValidator<VendaCadastroTO>, VendaCadastroValidator>();
             services.AddScoped<IValidator<VendaTO>, VendaValidator>();
             services.AddScoped<IValidator<VendaTO.ItemTO>, VendaValidator.ItemValidator>();
             services.AddScoped<IValidator<VendaItemTO>, VendaItemValidator>();
-
-            //services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
+            services.AddScoped<IValidator<IdentificadorProdutoTO>, VendaValidator.IdentificadorProdutoValidator>();
 
             return services;
         }

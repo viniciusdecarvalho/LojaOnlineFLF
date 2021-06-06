@@ -4,6 +4,6 @@ namespace LojaOnlineFLF.WebAPI.Services
 {
     public interface IAuthService
     {
-        public string ObterToken(AfirmacaoTO afirmacao);
+        public Autenticacao Autenticar(AfirmacaoTO afirmacao);
     }
 }

@@ -69,7 +69,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ProdutoTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoTO produto)
+        public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoCadastroTO produto)
         {
             ProdutoTO novoProduto = await this.produtosService.AdicionarAsync(produto);
 
@@ -85,6 +85,13 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AtualizarProduto([FromRoute] Guid id, [FromBody] ProdutoTO produto)
         {
+            bool existe = await this.produtosService.ContemAsync(id);
+
+            if(!existe)
+            {
+                return NotFound();
+            }
+
             await this.produtosService.AtualizarAsync(produto);
 
             return Ok(produto);
@@ -106,7 +113,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return NotFound();
             }
 
-            await this.produtosService.RemoverAsync(produto);
+            await this.produtosService.RemoverAsync(id);
 
             return NoContent();
         }

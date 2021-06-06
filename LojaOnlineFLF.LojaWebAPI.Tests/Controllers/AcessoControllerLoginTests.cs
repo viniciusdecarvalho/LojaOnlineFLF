@@ -19,7 +19,7 @@ namespace LojaOnlineFLF.LojaWebAPI.Tests.Controllers
         {
             var login = new Login() { Usuario = "usuario", Senha = "senha" };
             var funcionario = new FuncionarioTO();
-            string token = Guid.NewGuid().ToString();
+            var token = new Autenticacao();
 
             var mockAcessosRepository = new Mock<IAcessosService>();
             mockAcessosRepository
@@ -28,7 +28,7 @@ namespace LojaOnlineFLF.LojaWebAPI.Tests.Controllers
 
             var mockAuthService = new Mock<IAuthService>();
             mockAuthService
-                .Setup(a => a.ObterToken(It.IsAny<AfirmacaoTO>()))
+                .Setup(a => a.Autenticar(It.IsAny<AfirmacaoTO>()))
                     .Returns(token);
 
             var controller = new AcessosController(mockAcessosRepository.Object, mockAuthService.Object);

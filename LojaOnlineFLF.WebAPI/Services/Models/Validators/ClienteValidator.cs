@@ -17,7 +17,8 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
                         
             this.RuleFor(x => x.Cpf)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .DeveRespeitarFormatacaoCpf();
         }
     }
 }

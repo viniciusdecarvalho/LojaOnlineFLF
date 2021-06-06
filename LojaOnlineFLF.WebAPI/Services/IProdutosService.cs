@@ -11,12 +11,16 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         Task<ProdutoTO> ObterPorIdAsync(Guid id);
 
-        Task<ProdutoTO> AdicionarAsync(ProdutoTO produto);
+        Task<ProdutoTO> ObterPorCodigoBarrasAsync(string codigoBarras);
+
+        Task<ProdutoTO> AdicionarAsync(ProdutoCadastroTO produto);
 
         Task AtualizarAsync(ProdutoTO produto);
 
-        Task RemoverAsync(ProdutoTO produto);
+        Task RemoverAsync(Guid id);
 
         Task<bool> ContemAsync(Guid id);
+
+        Task<bool> ContemCodigoBarrasAsync(string codigoBarras);
     }
 }

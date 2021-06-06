@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.Utils;
@@ -12,13 +11,16 @@ namespace LojaOnlineFLF.WebAPI.Services
 {
     public class VendasService : IVendasService
     {
+        private readonly IClientesRepository clientesRepository;
         private readonly IVendasRepository vendasRepository;
-        private readonly IMapper mapper;
+        private readonly IMapperService mapper;
 
         public VendasService(
+            IClientesRepository clientesRepository,
             IVendasRepository vendasRepository,
-            IMapper mapper)
+            IMapperService mapper)
         {
+            this.clientesRepository = clientesRepository;
             this.vendasRepository = vendasRepository;
             this.mapper = mapper;
         }
@@ -27,19 +29,58 @@ namespace LojaOnlineFLF.WebAPI.Services
         {
             var entity = this.mapper.Map<Venda>(venda);
 
+            var cliente = await ObterOuCadastrarClienteParaNovaVenda(venda);
+
+            entity.Cliente = cliente;
+            entity.ClienteId = cliente?.Id;
+
             await this.vendasRepository.IncluirAsync(entity);
 
             return this.mapper.Map<VendaTO>(entity);
         }
 
-        public async Task<VendaTO> AlterarItemAsync(VendaTO vendaTO, ProdutoTO produtoTO, int? quantidade)
+        private async Task<Cliente> ObterOuCadastrarClienteParaNovaVenda(VendaCadastroTO venda)
         {
-            Objects.CheckArgumentNonNull(vendaTO, "venda", "registro de venda invalido");
-            Objects.CheckArgumentNonNull(produtoTO, "produto", "registro de produto invalido");
+            const string NomeClienteCadastradoAtravesDeVendas = "Cadastrado por venda";
 
-            VendaItem vendaItem = await this.vendasRepository.CriarVendaItemAsync(produtoTO.Id.GetValueOrDefault(Guid.Empty), quantidade);
+            Cliente cliente = null;
 
-            var venda = await this.vendasRepository.AlterarItemAsync(vendaTO.Id, vendaItem);
+            string cpf = venda.Cliente?.Cpf;
+            string fone = venda.Cliente?.Fone;
+
+            bool cpfInformado = !string.IsNullOrWhiteSpace(cpf);
+            bool foneInformado = !string.IsNullOrWhiteSpace(fone);
+
+            if (cpfInformado)
+            {
+                cliente = await this.clientesRepository.ObterPorCpfAsync(cpf);
+            }
+            else if (foneInformado)
+            {
+                cliente = await this.clientesRepository.ObterPorFoneAsync(fone);
+            }
+
+            if (cpfInformado && cliente is null)
+            {
+                cliente = new Cliente { Nome = NomeClienteCadastradoAtravesDeVendas, Cpf = cpf, Fone = fone };
+
+                await this.clientesRepository.IncluirAsync(cliente);
+            }
+
+            return cliente;
+        }
+
+        public async Task<VendaTO> AlterarItensAsync(Guid id, params VendaItemTO[] itens)
+        {
+            var venda = await this.vendasRepository.ObterAsync(id);
+
+            var itensVenda =
+                itens.Select(i => this.vendasRepository.CriarVendaItemAsync(i.ProdutoId, i.Quantidade)).ToList();
+
+            foreach (var item in itensVenda)
+            {
+                venda = await this.vendasRepository.AlterarItemAsync(id, await item);
+            }
 
             return this.mapper.Map<VendaTO>(venda);
         }
@@ -86,6 +127,13 @@ namespace LojaOnlineFLF.WebAPI.Services
             Venda venda = await this.vendasRepository.ObterAsync(id);
 
             return this.mapper.Map<VendaTO>(venda);
+        }
+
+        public async Task<IEnumerable<VendaTO>> ObterVendasPorData(DateTime data)
+        {
+            var vendas = await this.vendasRepository.ObterTodasPorDataAsync(data);
+
+            return this.mapper.Map<IEnumerable<VendaTO>>(vendas);
         }
 
         public async Task<VendaTO> ReabrirVendaAsync(VendaTO venda)

@@ -22,18 +22,14 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
                 .NotNull()
                 .NotEqual(Guid.Empty)
                 .WithMessage(VendaInvalidaMensagem)
-                .MustAsync(async (x, c) => {
-                    return await vendasService.ObterPorIdAsync(x.GetValueOrDefault(Guid.Empty)) != null;
-                })
+                .MustAsync((x, c) => vendasService.ContemAsync(x))
                 .WithMessage(VendaInvalidaMensagem);
 
             this.RuleFor(x => x.ProdutoId)
                 .NotNull()
                 .NotEqual(Guid.Empty)
                 .WithMessage(ProdutoInvalidoMensagem)
-                .MustAsync(async (x, c) => {
-                    return await produtosService.ObterPorIdAsync(x.GetValueOrDefault(Guid.Empty)) != null;
-                })
+                .MustAsync((x, c) => produtosService.ContemAsync(x))
                 .WithMessage(ProdutoInvalidoMensagem);
 
             this.RuleFor(x => x.Quantidade)

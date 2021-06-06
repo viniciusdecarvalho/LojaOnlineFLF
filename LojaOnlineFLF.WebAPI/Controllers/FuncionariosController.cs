@@ -112,7 +112,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return NotFound();
             }
 
-            await this.funcionariosService.RemoverAsync(funcionario);
+            await this.funcionariosService.RemoverAsync(id);
 
             return NoContent();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.Utils
 {
@@ -10,6 +11,21 @@ namespace LojaOnlineFLF.Utils
             {
                 throw new ArgumentNullException(paramName, message);
             }
+        }
+
+        public static Task<TResult> Try<TResult>(Func<Task<TResult>> function, string mensagem)
+        {
+            return Task.Run<TResult>(async () =>
+            {
+                try
+                {
+                    return await function.Invoke();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(mensagem, e);
+                }
+            });
         }
     }
 }

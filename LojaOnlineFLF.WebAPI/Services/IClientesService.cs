@@ -13,9 +13,9 @@ namespace LojaOnlineFLF.WebAPI.Services
 
         Task AtualizarAsync(ClienteTO cliente);
 
-        Task RemoverAsync(ClienteTO cliente);
+        Task RemoverAsync(Guid id);
 
-        Task<IEnumerable<ClienteTO>> ObterPorCpfAsync(string cpf);
+        Task<ClienteTO> ObterPorCpfAsync(string cpf);
 
         Task<bool> ContemAsync(Guid id);
     }
