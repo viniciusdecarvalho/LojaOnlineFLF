@@ -37,12 +37,13 @@ namespace LojaOnlineFLF.DataModel.Repositories
             await this.produtos.IncluirAsync(produto);
         }
 
-        public async Task<IEnumerable<Produto>> ListarTodosAsync()
+        public async Task<IPagedList<Produto>> ListarTodosAsync(IPageSet pageSet)
         {
             return await this.produtos.Query
                             .Where(p => p.Ativo)
                             .AsNoTracking()
-                            .ToListAsync();
+                            .WithPageSet(pageSet)
+                            .ToPagedListAsync();
         }
 
         public async Task<Produto> ObterAsync(Guid id)

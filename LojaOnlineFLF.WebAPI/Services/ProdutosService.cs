@@ -85,13 +85,13 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///<summary>
         /// Buscar todos os produtos
         ///</summary>
-        public async Task<IEnumerable<ProdutoTO>> ObterTodosAsync()
+        public async Task<IPagedList<ProdutoTO>> ObterTodosAsync(Paginacao paginacao)
         {
             try
             {
-                var produtos = await this.produtosProvider.ListarTodosAsync();
+                var produtos = await this.produtosProvider.ListarTodosAsync(paginacao.ToPageSet());
 
-                return produtos.Select(this.mapper.Map<ProdutoTO>).ToList();
+                return produtos.Transform(p => this.mapper.Map<ProdutoTO>(p));
             }
             catch(Exception e)
             {

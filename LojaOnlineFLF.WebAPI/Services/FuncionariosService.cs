@@ -132,14 +132,13 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///<summary>
         /// Buscar todos os funcionarios
         ///</summary>
-        public async Task<IEnumerable<FuncionarioTO>> ObterTodosAsync() 
+        public async Task<IPagedList<FuncionarioTO>> ObterTodosAsync(Paginacao paginacao) 
         {
             try
             {
+                var funcionarios = await this.funcionariosProvider.ListarTodosAsync(paginacao.ToPageSet());
 
-                var funcionarios = await this.funcionariosProvider.ListarTodosAsync();
-
-                return funcionarios.Select(this.mapper.Map<FuncionarioTO>).ToList();
+                return funcionarios.Transform((f) => this.mapper.Map<FuncionarioTO>(f));
             }
             catch(Exception e)
             {

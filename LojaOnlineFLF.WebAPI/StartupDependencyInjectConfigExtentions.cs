@@ -49,6 +49,8 @@ namespace LojaOnlineFLF.WebAPI
             services.AddScoped<IMapperService, MapperService>();
 
             //Validators
+            services.AddScoped<IValidator<Paginacao>, PaginacaoValidator>();
+
             services.AddScoped<IValidator<FuncionarioTO>, FuncionarioValidator>();
             services.AddScoped<IValidator<Login>, AcessoValidator>();
             services.AddScoped<IValidator<ProdutoCadastroTO>, ProdutoCadastroValidator>();

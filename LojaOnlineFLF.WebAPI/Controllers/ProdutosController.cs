@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +15,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [ApiController]
     [Consumes(K.MediaTypes.AplicationJson)]
     [Produces(K.MediaTypes.AplicationJson)]
-    [Route("api/produtos")]
+    [Route(Rota)]
     public class ProdutosController : ControllerBase
     {
+        public const string Rota = "api/produtos";
+
         private readonly ILogger<FuncionariosController> logger;
         private readonly IProdutosService produtosService;
 
@@ -35,13 +38,15 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar todos os produtos
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ProdutoTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResource<ProdutoTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ObterProdutos()
+        public async Task<IActionResult> ObterProdutos([FromQuery]Paginacao paginacao)
         {
-            IEnumerable<ProdutoTO> produtos = await this.produtosService.ObterTodosAsync();
+            IPagedList<ProdutoTO> produtos = await this.produtosService.ObterTodosAsync(paginacao);
 
-            return Ok(produtos);
+            var page = new PagedResource<ProdutoTO>(produtos, paginacao, Rota);
+
+            return Ok(page);
         }
 
         /// <summary>

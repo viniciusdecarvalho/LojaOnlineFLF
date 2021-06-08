@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.WebAPI.Services.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services
@@ -33,7 +34,7 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///<summary>
         /// Buscar todos os funcionarios
         ///</summary>
-        Task<IEnumerable<FuncionarioTO>> ObterTodosAsync();
+        Task<IPagedList<FuncionarioTO>> ObterTodosAsync(Paginacao paginacao);
 
         /// <summary>
         /// true para cliente com id informado existir, false caso contrario

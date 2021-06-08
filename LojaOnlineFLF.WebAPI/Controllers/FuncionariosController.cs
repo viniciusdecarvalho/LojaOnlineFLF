@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,9 +18,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [ApiController]
     [Consumes(K.MediaTypes.AplicationJson)]
     [Produces(K.MediaTypes.AplicationJson)]
-    [Route("api/funcionarios")]
+    [Route(Rota)]
     public sealed class FuncionariosController : ControllerBase
     {
+        public const string Rota = "api/funcionarios";
+
         private readonly ILogger<FuncionariosController> _logger;
         private readonly IAcessosService acessosService;
         private readonly IFuncionariosService funcionariosService;
@@ -41,13 +44,15 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar todos os funcionarios
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<FuncionarioTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResource<FuncionarioTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ObterFuncionarios()
+        public async Task<IActionResult> ObterFuncionarios([FromQuery] Paginacao paginacao)
         {
-            IEnumerable<FuncionarioTO> funcionarios = await this.funcionariosService.ObterTodosAsync();
+            IPagedList<FuncionarioTO> funcionarios = await this.funcionariosService.ObterTodosAsync(paginacao);
 
-            return Ok(funcionarios);
+            var page = new PagedResource<FuncionarioTO>(funcionarios, paginacao, Rota);
+
+            return Ok(page);
         }
         
         /// <summary>

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.WebAPI.Services.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services
 {
     public interface IProdutosService
     {
-        Task<IEnumerable<ProdutoTO>> ObterTodosAsync();
+        Task<IPagedList<ProdutoTO>> ObterTodosAsync(Paginacao paginacao);
 
         Task<ProdutoTO> ObterPorIdAsync(Guid id);
 
