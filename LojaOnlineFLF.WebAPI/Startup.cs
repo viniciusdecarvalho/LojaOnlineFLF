@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
+using LojaOnlineFLF.WebAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +46,7 @@ namespace LojaOnlineFLF.WebAPI
                 })
                 .AddFluentValidation();
 
+            services.AddDbContext<CacheContext>(opt => opt.UseInMemoryDatabase("cache"));
             services.AddDbContext<LojaEFContext>(opt =>
             {
                 string connectionString = GetConnectionString();
