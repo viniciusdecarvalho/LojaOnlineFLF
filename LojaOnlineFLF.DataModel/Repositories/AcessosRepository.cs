@@ -77,5 +77,16 @@ namespace LojaOnlineFLF.DataModel.Repositories
                 throw new InvalidOperationException($"{string.Join(", ", erros)}");
             }
         }
+
+        public async Task<Funcionario> ObterFuncionarioAsync(string userName)
+        {
+            var acesso =
+                await this.context.Acessos
+                                    .Include(a => a.Funcionario)
+                                    .Where(a => a.UserName == userName)
+                                    .FirstOrDefaultAsync();
+
+            return acesso?.Funcionario;
+        }
     }
 }

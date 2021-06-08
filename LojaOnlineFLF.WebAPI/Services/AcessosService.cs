@@ -12,6 +12,7 @@ namespace LojaOnlineFLF.WebAPI.Services
     public class AcessosService: IAcessosService
     {
         private readonly IAcessosRepository acessosRepository;
+        private readonly IRefreshTokenManager refreshTokenManager;
         private readonly IMapperService mapper;
 
         ///<summary>
@@ -19,9 +20,11 @@ namespace LojaOnlineFLF.WebAPI.Services
         ///</summary>
         public AcessosService(
             IAcessosRepository acessosRepository,
+            IRefreshTokenManager refreshTokenManager,
             IMapperService mapper)
         {
             this.acessosRepository = acessosRepository;
+            this.refreshTokenManager = refreshTokenManager;
             this.mapper = mapper;
         }
 
@@ -103,6 +106,25 @@ namespace LojaOnlineFLF.WebAPI.Services
             {
                 throw new ServiceException("falha ao validar acesso", e);
             }
+        }
+
+        public async Task<FuncionarioTO> ValidarTokenAsync(RefreshToken refreshToken)
+        {
+            string userName = await this.refreshTokenManager.GetUserNameAsync(refreshToken.Token);
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new InvalidOperationException("usuario nao encontrado para o token informado");
+            }
+
+            if (!userName.Equals(refreshToken.Usuario))
+            {
+                throw new InvalidOperationException("usuario invalido pra o token informado");
+            }
+
+            Funcionario funcionario = await this.acessosRepository.ObterFuncionarioAsync(userName);
+
+            return this.mapper.Map<FuncionarioTO>(funcionario);
         }
     }
 }

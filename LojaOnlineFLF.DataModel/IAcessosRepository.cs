@@ -10,5 +10,7 @@ namespace LojaOnlineFLF.DataModel
         Task AlterarAsync(Acesso acesso, string senhaAtual, string novaSenha);
 
         Task<Funcionario> LoginAsync(string usuario, string senha);
+
+        Task<Funcionario> ObterFuncionarioAsync(string userName);
     }
 }

@@ -8,5 +8,6 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         public string Token { get; set; }
         public DateTime DataExpiracao { get; internal set; }
         public DateTime DataCriacao { get; internal set; }
+        public string RefreshToken { get; internal set; }
     }
 }

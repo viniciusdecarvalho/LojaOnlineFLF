@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +39,6 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Autenticacao), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ValidarAcesso(Login acesso)
         {
             FuncionarioTO funcionario = await this.acessosService.ValidarAcessoAsync(acesso);
@@ -49,7 +49,29 @@ namespace LojaOnlineFLF.WebAPI.Controllers
             }
 
             var autenticacao =
-                this.authService.Autenticar(new AfirmacaoTO(acesso.Usuario, funcionario.Id.ToString()));
+                this.authService.Autenticar(new AfirmacaoTO(acesso.Usuario, funcionario.Id.ToString()));            
+
+            return base.Ok(autenticacao);
+        }
+
+        /// <summary>
+        /// Realizar login, recuperar token de acesso ao servico
+        /// </summary>
+        /// <remarks>Reautenticar, apos expiracao do token utilizando chave com refresh token</remarks>
+        [HttpPost("refresh")]
+        [ProducesResponseType(typeof(Autenticacao), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AtualizarTokenAcesso(RefreshToken token)
+        {
+            FuncionarioTO funcionario = await this.acessosService.ValidarTokenAsync(token);
+
+            if (funcionario is null)
+            {
+                return Unauthorized();
+            }
+
+            var autenticacao =
+                this.authService.Autenticar(new AfirmacaoTO(token.Usuario, funcionario.Id.ToString()));
 
             return base.Ok(autenticacao);
         }
