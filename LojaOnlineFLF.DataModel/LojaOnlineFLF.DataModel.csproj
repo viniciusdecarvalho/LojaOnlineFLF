@@ -33,4 +33,7 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\Cache.cs" />
+  </ItemGroup>
 </Project>

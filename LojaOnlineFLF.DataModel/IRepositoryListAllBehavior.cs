@@ -6,6 +6,6 @@ namespace LojaOnlineFLF.DataModel
 {
     public interface IRepositoryListAllBehavior<T> where T: class
     {
-        Task<IEnumerable<T>> ListarTodosAsync();
+        Task<IPagedList<T>> ListarTodosAsync(IPageSet page);
     }
 }
