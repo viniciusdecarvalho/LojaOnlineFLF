@@ -63,7 +63,7 @@ namespace LojaOnlineFLF.WebAPI
             }).AddEntityFrameworkStores<LojaEFContext>();
             
             services.AddDependencyInjectConfig();
-            services.AddTransactionControlMiddleware();
+            services.AddTransactionControlMiddleware<LojaEFContext>();
             services.AddAutoMapperConfig();
             services.AddBearerAuthentication();   
             services.AddSwaggerGenConfig();

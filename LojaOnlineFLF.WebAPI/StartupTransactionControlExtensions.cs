@@ -23,13 +23,13 @@ namespace LojaOnlineFLF.WebAPI
             return app;
         }
 
-        public static IServiceCollection AddTransactionControlMiddleware(this IServiceCollection services)
+        public static IServiceCollection AddTransactionControlMiddleware<TContext>(this IServiceCollection services) where TContext: DbContext
         {
             services
-                .AddTransient<TransactionControlMiddleware<LojaEFContext>>(provider => {
-                    var context = provider.GetService<LojaEFContext>();
-                    var logger = provider.GetService<ILogger<TransactionControlMiddleware<LojaEFContext>>>();
-                    return new TransactionControlMiddleware<LojaEFContext>(logger, context);
+                .AddTransient<TransactionControlMiddleware<TContext>>(provider => {
+                    var context = provider.GetService<TContext>();
+                    var logger = provider.GetService<ILogger<TransactionControlMiddleware<TContext>>>();
+                    return new TransactionControlMiddleware<TContext>(logger, context);
                 });
 
             return services;
