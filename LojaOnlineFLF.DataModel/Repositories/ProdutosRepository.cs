@@ -43,6 +43,8 @@ namespace LojaOnlineFLF.DataModel.Repositories
                             .Where(p => p.Ativo)
                             .AsNoTracking()
                             .WithPageSet(pageSet)
+                            .WithPageSize(pageSet.PageSize)
+                            .WithPageResult(pageSet.Current)
                             .ToPagedListAsync();
         }
 

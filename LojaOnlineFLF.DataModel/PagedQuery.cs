@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,9 @@ namespace LojaOnlineFLF.DataModel
     internal class PagedQuery<T>: IPagedQuery<T>
     {
         private readonly IQueryable<T> source;
-        private readonly int pageIndex;
-        private readonly int pageSize;
-        private readonly int startIndex;
+        private int pageIndex;
+        private int pageSize;
+        private int startIndex;
 
         public PagedQuery(IQueryable<T> source, int pageIndex, int pageSize)
         {
@@ -53,6 +54,30 @@ namespace LojaOnlineFLF.DataModel
             var total = await this.source.CountAsync();
 
             return Create(items, total);
+        }
+
+        public IPagedQuery<T> WithPageSize(int pageSize)
+        {
+            if (pageSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "deve ser maior que zero.");
+            }
+
+            this.pageSize = pageSize;
+
+            return this;
+        }
+
+        public IPagedQuery<T> WithPageResult(int pageNumber)
+        {
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "deve ser maior que zero.");
+            }
+
+            this.pageIndex = pageNumber;
+
+            return this;
         }
     }
 }

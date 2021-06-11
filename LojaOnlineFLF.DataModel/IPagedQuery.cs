@@ -4,8 +4,12 @@ namespace LojaOnlineFLF.DataModel
 {
     public interface IPagedQuery<T>
     {
-        public IPagedList<T> ToPagedList();
+        IPagedQuery<T> WithPageSize(int pageSize);
 
-        public Task<IPagedList<T>> ToPagedListAsync();
+        IPagedQuery<T> WithPageResult(int pageNumber);
+
+        IPagedList<T> ToPagedList();
+
+        Task<IPagedList<T>> ToPagedListAsync();
     }
 }

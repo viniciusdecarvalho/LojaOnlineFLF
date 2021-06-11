@@ -26,16 +26,16 @@ namespace LojaOnlineFLF.WebAPI.Services
                 this.PageSize());
         }
 
-        public int Current() => this.NumeroPagina.GetValueOrDefault(1);
+        internal int Current() => this.NumeroPagina.GetValueOrDefault(1);
 
-        public int PageSize() => this.TamanhoPagina.GetValueOrDefault(25);
+        internal int PageSize() => this.TamanhoPagina.GetValueOrDefault(25);
 
-        public string NextPage(string resource)
+        internal string NextPage(string resource)
         {
             return $"{resource}?{nameof(TamanhoPagina)}={this.TamanhoPagina}&{nameof(NumeroPagina)}={this.Current() + 1}";
         }
 
-        public string BeforePage(string resource)
+        internal string BeforePage(string resource)
         {
             return $"{resource}?{nameof(TamanhoPagina)}={this.TamanhoPagina}&{nameof(NumeroPagina)}={this.Current() - 1}";
         }

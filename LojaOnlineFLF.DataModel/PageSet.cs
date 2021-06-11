@@ -1,10 +1,10 @@
 ﻿namespace LojaOnlineFLF.DataModel
 {
-    public sealed class PageSet: IPageSet
+    public class PageSet: IPageSet
     {
-        public int Current { get; set; }
+        public int Current { get; set; } = 1;
 
-        public int PageSize { get; set; } = 10;
+        public int PageSize { get; set; } = 25;
 
         private PageSet() { }
 
