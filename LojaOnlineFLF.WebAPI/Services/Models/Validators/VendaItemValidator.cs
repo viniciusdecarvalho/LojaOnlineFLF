@@ -6,7 +6,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes dos itens da venda
     ///</summary>
-    public class VendaItemValidator : AbstractValidator<VendaItemTO>
+    internal class VendaItemValidator : AbstractValidator<VendaItemTO>
     {
         private const string VendaInvalidaMensagem = "registro de venda invalido";
         private const string ProdutoInvalidoMensagem = "registro de produto invalido";

@@ -1,3 +1,4 @@
+using LojaOnlineFLF.DataModel;
 using System;
 using System.ComponentModel;
 
@@ -43,5 +44,22 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         /// </summary>
         /// <example>2021-05-30</example>
         public DateTime? DataFim { get; set; }
+    }
+
+    /// <summary>
+    /// Paginacao de funcionarios
+    /// </summary>
+    [ResultName("FuncionariosComPaginacao")]
+    public class FuncionariosComPaginacao : PagedResource<FuncionarioTO>
+    {
+        /// <summary>
+        /// Construtor padrao
+        /// </summary>
+        /// <param name="produtos"></param>
+        /// <param name="paginacao"></param>
+        /// <param name="resource"></param>
+        public FuncionariosComPaginacao(IPagedList<FuncionarioTO> produtos, Paginacao paginacao, string resource) : base(produtos, paginacao, resource)
+        {
+        }
     }
 }

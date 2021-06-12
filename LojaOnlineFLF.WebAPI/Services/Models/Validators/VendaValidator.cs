@@ -6,7 +6,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes da venda
     ///</summary>
-    public class VendaValidator : AbstractValidator<VendaTO>
+    internal class VendaValidator : AbstractValidator<VendaTO>
     {
         private const string ProdutoInvalidoMensagem = "produto invalido";
         private const string VendaInvalidoMensagem = "venda invalido";
@@ -15,7 +15,6 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
         /// Construtor padrao
         ///</summary>
         public VendaValidator(
-            IValidator<ClienteTO> validatorCliente,
             IValidator<VendaTO.ItemTO> validatorVendaItem)
         {
             this.RuleFor(x => x.Data)

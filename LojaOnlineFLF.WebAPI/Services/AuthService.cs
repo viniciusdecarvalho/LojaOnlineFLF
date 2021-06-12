@@ -7,16 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace LojaOnlineFLF.WebAPI.Services
 {
-    public class AuthService: IAuthService
+    internal class AuthService: IAuthService
     {
-        private readonly IRefreshTokenFactory refreshTokenFactory;
         private readonly IRefreshTokenManager refreshTokenManager;
 
         public AuthService(
-            IRefreshTokenFactory refreshTokenFactory,
             IRefreshTokenManager refreshTokenManager)
         {
-            this.refreshTokenFactory = refreshTokenFactory;
             this.refreshTokenManager = refreshTokenManager;
         }
 
@@ -50,7 +47,7 @@ namespace LojaOnlineFLF.WebAPI.Services
 
                 string tokenString = tokenHandler.WriteToken(token);
 
-                RefreshToken refreshToken = this.refreshTokenFactory.Create(afirmacao.Usuario);
+                RefreshToken refreshToken = this.refreshTokenManager.Create(afirmacao.Usuario);
 
                 Autenticacao autenticacao = new Autenticacao
                 {

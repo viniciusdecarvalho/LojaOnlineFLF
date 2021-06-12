@@ -3,16 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-public class TransactionControlMiddleware<TContext> : IMiddleware where TContext: DbContext
+internal class TransactionControlMiddleware<TContext> : IMiddleware where TContext: DbContext
 {
-    private readonly ILogger<TransactionControlMiddleware<TContext>> _logger;
     private readonly TContext context;
 
     public TransactionControlMiddleware(
-        ILogger<TransactionControlMiddleware<TContext>> logger,
         TContext context)
     {
-        _logger = logger;
         this.context = context;
     }
 
@@ -47,6 +44,8 @@ public class TransactionControlMiddleware<TContext> : IMiddleware where TContext
 
     private static bool CanOpenTransaction(HttpContext httpContext)
     {
-        return true;// !"GET".Equals(httpContext.Request.Method.ToUpper());
+        const string Get = "GET";
+
+        return !Get.Equals(httpContext.Request.Method.ToUpper());
     }
 }

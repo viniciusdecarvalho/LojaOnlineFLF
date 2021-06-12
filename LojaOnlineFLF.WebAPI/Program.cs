@@ -9,14 +9,21 @@ using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public class Program
+    /// <summary>
+    /// Inicializacao com host do kestrel
+    /// </summary>
+    public static class Program
     {
+        /// <summary>
+        /// Inicializacao
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        internal static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

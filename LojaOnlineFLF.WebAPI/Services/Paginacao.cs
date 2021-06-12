@@ -19,6 +19,10 @@ namespace LojaOnlineFLF.WebAPI.Services
         /// </summary>
         public int? TamanhoPagina { get; set; }
 
+        /// <summary>
+        /// Gerar PageSet para paginacao
+        /// </summary>
+        /// <returns></returns>
         public IPageSet ToPageSet()
         {
             return PageSet.Create(

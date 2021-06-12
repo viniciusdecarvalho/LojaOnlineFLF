@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
+    /// <summary>
+    /// Recursos de produtos
+    /// </summary>
     [Authorize]
     [ApiController]
     [Consumes(K.MediaTypes.AplicationJson)]
@@ -18,33 +21,33 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [Route(Rota)]
     public class ProdutosController : ControllerBase
     {
+        /// <summary>
+        /// Rota base
+        /// </summary>
         public const string Rota = "api/produtos";
 
-        private readonly ILogger<FuncionariosController> logger;
         private readonly IProdutosService produtosService;
 
         ///<summary>
         /// Construtor padrao
         ///</summary>
         public ProdutosController(
-            ILogger<FuncionariosController> logger,
             IProdutosService produtosService)
         {
-            this.logger = logger;
             this.produtosService = produtosService;
         }
 
         /// <summary>
-        /// Recuperar todos os produtos
+        /// Recuperar  produtos utilizando paginacao
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResource<ProdutoTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProdutosComPaginacao), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterProdutos([FromQuery]Paginacao paginacao)
         {
             IPagedList<ProdutoTO> produtos = await this.produtosService.ObterTodosAsync(paginacao);
 
-            var page = new PagedResource<ProdutoTO>(produtos, paginacao, Rota);
+            var page = new ProdutosComPaginacao(produtos, paginacao, Rota);
 
             return Ok(page);
         }

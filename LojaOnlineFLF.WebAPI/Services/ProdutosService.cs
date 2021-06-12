@@ -12,7 +12,7 @@ namespace LojaOnlineFLF.WebAPI.Services
     ///<summary>
     /// servicos de produtos padrao
     ///</summary>
-    public class ProdutosService : IProdutosService
+    internal class ProdutosService : IProdutosService
     {
         private readonly IProdutosRepository produtosProvider;
         private readonly IMapperService mapper;

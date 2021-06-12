@@ -8,11 +8,11 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes do produto para novo cadastro
     ///</summary>
-    public class ProdutoCadastroValidator : AbstractValidator<ProdutoCadastroTO>
+    internal class ProdutoCadastroValidator : AbstractValidator<ProdutoCadastroTO>
     {
         private const string CodigoBarrasExistenteMensagem = "produto com codigo de barras informado ja existe";
 
-        private IProdutosService produtosService;
+        private readonly IProdutosService produtosService;
 
         ///<summary>
         /// Construtor padrao

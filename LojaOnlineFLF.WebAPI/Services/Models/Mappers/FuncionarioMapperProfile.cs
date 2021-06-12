@@ -5,7 +5,7 @@ using LojaOnlineFLF.DataModel.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models.Mappers
 {
-    public class FuncionarioMapperProfile: Profile
+    internal class FuncionarioMapperProfile: Profile
     {
         public FuncionarioMapperProfile(ICargos cargos)
         {

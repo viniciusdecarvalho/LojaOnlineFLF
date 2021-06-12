@@ -9,7 +9,7 @@ namespace LojaOnlineFLF.WebAPI.Services
     ///<summary>
     /// servicos de funcionarios padrao
     ///</summary>
-    public class AcessosService: IAcessosService
+    internal class AcessosService: IAcessosService
     {
         private readonly IAcessosRepository acessosRepository;
         private readonly IRefreshTokenManager refreshTokenManager;

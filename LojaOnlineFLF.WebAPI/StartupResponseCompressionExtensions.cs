@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupResponseCompressionExtensions
+    internal static class StartupResponseCompressionExtensions
     {
         public static IApplicationBuilder UseCompressionConfig(this IApplicationBuilder app)
         {

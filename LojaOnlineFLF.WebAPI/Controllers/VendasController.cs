@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
+    /// <summary>
+    /// Recursos de vendas
+    /// </summary>
     [Authorize]
     [ApiController]
     [Consumes(K.MediaTypes.AplicationJson)]
@@ -18,7 +21,6 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [Route("api/vendas")]
     public class VendasController : ControllerBase
     {
-        private readonly ILogger<VendasController> logger;
         private readonly IProdutosService produtosService;
         private readonly IVendasService vendasService;
 
@@ -26,11 +28,9 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Construtor padrao
         ///</summary>
         public VendasController(
-            ILogger<VendasController> logger,
             IProdutosService produtosService,
             IVendasService vendasService)
         {
-            this.logger = logger;
             this.produtosService = produtosService;
             this.vendasService = vendasService;
         }

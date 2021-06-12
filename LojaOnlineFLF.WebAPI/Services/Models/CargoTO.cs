@@ -11,6 +11,9 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     [ResultName("Cargo")]
     public enum CargoTO
     {
+        /// <summary>
+        /// Nao definido
+        /// </summary>
         Indefinido,
 
         ///<summary>

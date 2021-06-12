@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupDependencyInjectExtentions
+    internal static class StartupDependencyInjectExtentions
     {        
         public static IServiceCollection AddDependencyInjectConfig(this IServiceCollection services)
         {

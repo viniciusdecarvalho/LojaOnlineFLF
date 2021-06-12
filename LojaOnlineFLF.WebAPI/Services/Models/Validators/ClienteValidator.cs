@@ -5,7 +5,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes do funcionario
     ///</summary>
-    public class ClienteValidator : AbstractValidator<ClienteTO>
+    internal class ClienteValidator : AbstractValidator<ClienteTO>
     {
         ///<summary>
         /// Construtor padrao

@@ -7,7 +7,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes do funcionario
     ///</summary>
-    public class PaginacaoValidator : AbstractValidator<Paginacao>
+    internal class PaginacaoValidator : AbstractValidator<Paginacao>
     {
         ///<summary>
         /// Construtor padrao

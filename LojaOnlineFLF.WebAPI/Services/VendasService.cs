@@ -9,7 +9,7 @@ using LojaOnlineFLF.WebAPI.Services.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services
 {
-    public class VendasService : IVendasService
+    internal class VendasService : IVendasService
     {
         private readonly IClientesRepository clientesRepository;
         private readonly IVendasRepository vendasRepository;

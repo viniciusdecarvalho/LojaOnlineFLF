@@ -10,8 +10,8 @@ namespace LojaOnlineFLF.DataModel.Repositories
 {
     internal class FuncionariosRepository: IFuncionariosRepository
     {
-        private RepositoryEF<Funcionario, Guid> funcionarios;
-        private RepositoryEF<Cargo, Guid> cargos;
+        private readonly RepositoryEF<Funcionario, Guid> funcionarios;
+        private readonly RepositoryEF<Cargo, Guid> cargos;
 
         public FuncionariosRepository(LojaEFContext context)
         {
@@ -67,14 +67,14 @@ namespace LojaOnlineFLF.DataModel.Repositories
             await this.AtualizarAsync(funcionario);
         }
 
-        public async Task<ICargos> ObterCargosAsync()
+        public Task<ICargos> ObterCargosAsync()
         {
-            var cargos = await this.cargos.Query.ToListAsync();
+            var gerente = new Cargo { Id = Cargo.Operacional, Nome = nameof(Cargo.Operacional) };
+            var operacional = new Cargo { Id = Cargo.Gerente, Nome = nameof(Cargo.Gerente) };
 
-            var gerente = cargos.FirstOrDefault(c => c.Id == Cargo.Gerente);
-            var operacional = cargos.FirstOrDefault(c => c.Id == Cargo.Operacional);
+            var cargos = new Cargos(gerente: gerente, operacional: operacional);
 
-            return new Cargos(gerente: gerente, operacional: operacional);
+            return Task.FromResult<ICargos>(cargos);
         }
 
         public async Task<bool> ContemAsync(Guid id)

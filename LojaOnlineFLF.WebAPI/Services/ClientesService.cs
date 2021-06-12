@@ -11,7 +11,7 @@ namespace LojaOnlineFLF.WebAPI.Services
     ///<summary>
     /// servicos de produtos padrao
     ///</summary>
-    public class ClientesService : IClientesService
+    internal class ClientesService : IClientesService
     {
         private readonly IClientesRepository clientesProvider;
         private readonly IMapperService mapper;

@@ -11,7 +11,7 @@ namespace LojaOnlineFLF.WebAPI.Services
     ///<summary>
     /// servicos de funcionarios padrao
     ///</summary>
-    public class FuncionariosService: IFuncionariosService
+    internal class FuncionariosService: IFuncionariosService
     {
         private readonly IFuncionariosRepository funcionariosProvider;
         private readonly IMapperService mapper;
@@ -146,6 +146,11 @@ namespace LojaOnlineFLF.WebAPI.Services
             }
         }
 
+        /// <summary>
+        /// Verifica se registro com id informado na existe
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>true caso identificador seja encontrado, false caso contrario</returns>
         public async Task<bool> ContemAsync(Guid id)
         {
             try

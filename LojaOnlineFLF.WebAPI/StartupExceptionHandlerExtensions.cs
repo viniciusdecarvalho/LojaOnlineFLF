@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupExceptionHandlerExtensions
+    internal static class StartupExceptionHandlerExtensions
     {        
         public static IApplicationBuilder UseExceptionHandlerConfig(this IApplicationBuilder app)
         {

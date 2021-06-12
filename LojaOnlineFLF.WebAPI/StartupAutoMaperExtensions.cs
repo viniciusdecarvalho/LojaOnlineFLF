@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupAutoMaperExtensions
+    internal static class StartupAutoMaperExtensions
     {
         public static IServiceCollection AddAutoMapperConfig(this IServiceCollection services)
         {           

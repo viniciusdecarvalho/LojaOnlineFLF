@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models
 {
-    internal class RefreshTokenManager: IRefreshTokenFactory, IRefreshTokenManager
+    internal class RefreshTokenManager: IRefreshTokenManager
     {
         const string CacheTipo = "RefreshToken";
 

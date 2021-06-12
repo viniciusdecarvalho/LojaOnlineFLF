@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
+    /// <summary>
+    /// Recuros de clientes
+    /// </summary>
     [Authorize]
     [ApiController]
     [Consumes(K.MediaTypes.AplicationJson)]
@@ -17,17 +20,14 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [Route("api/clientes")]
     public class ClientesController : ControllerBase
     {
-        private readonly ILogger<ClientesController> logger;
         private readonly IClientesService clientesService;
 
         ///<summary>
         /// Construtor padrao
         ///</summary>
         public ClientesController(
-            ILogger<ClientesController> logger,
             IClientesService clientesService)
         {
-            this.logger = logger;
             this.clientesService = clientesService;
         }
 
@@ -91,6 +91,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AtualizarCliente([FromRoute] Guid id, [FromBody] ClienteTO cliente)
         {
+            if (!id.Equals(cliente?.Id))
+            {
+                return BadRequest("identificador da rota diverge do cliente informado no corpo");
+            }
+
             await this.clientesService.AtualizarAsync(cliente);
 
             return Ok(cliente);

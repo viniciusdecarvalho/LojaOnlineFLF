@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupTransactionControlExtensions
+    internal static class StartupTransactionControlExtensions
     {
         public static IApplicationBuilder UseTransactionControlMiddleware<TContext>(this IApplicationBuilder app) where TContext: DbContext
         {
@@ -28,8 +28,7 @@ namespace LojaOnlineFLF.WebAPI
             services
                 .AddTransient<TransactionControlMiddleware<TContext>>(provider => {
                     var context = provider.GetService<TContext>();
-                    var logger = provider.GetService<ILogger<TransactionControlMiddleware<TContext>>>();
-                    return new TransactionControlMiddleware<TContext>(logger, context);
+                    return new TransactionControlMiddleware<TContext>(context);
                 });
 
             return services;

@@ -9,13 +9,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -50,8 +52,8 @@ namespace LojaOnlineFLF.WebAPI
             services.AddDbContext<LojaEFContext>(opt =>
             {
                 string connectionString = GetConnectionString();
-
-                opt.UseNpgsql(connectionString);
+                opt.UseInMemoryDatabase("lojaonline")
+                   .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning)) ;
             });
 
             services.AddIdentity<Acesso, IdentityRole>(options =>
@@ -83,6 +85,11 @@ namespace LojaOnlineFLF.WebAPI
             if (env.IsProduction())
             {
                 context.Database.Migrate();
+            }
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseSwaggerConfig();

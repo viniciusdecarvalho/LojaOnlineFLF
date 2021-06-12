@@ -7,7 +7,7 @@ namespace LojaOnlineFLF.WebAPI.Services.Models
     ///<summary>
     /// Validacoes da venda
     ///</summary>
-    public class VendaCadastroValidator : AbstractValidator<VendaCadastroTO>
+    internal class VendaCadastroValidator : AbstractValidator<VendaCadastroTO>
     {
         ///<summary>
         /// Construtor padrao

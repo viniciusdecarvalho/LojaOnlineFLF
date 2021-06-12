@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupAuthenticationExtentions
+    internal static class StartupAuthenticationExtentions
     {        
         public static IServiceCollection AddBearerAuthentication(this IServiceCollection services)
         {
@@ -52,7 +52,6 @@ namespace LojaOnlineFLF.WebAPI
             });
 
             services.AddSingleton(tokenValidationParameters);
-            services.AddScoped<IRefreshTokenFactory, RefreshTokenManager>();
             services.AddScoped<IRefreshTokenManager, RefreshTokenManager>();
 
             return services;

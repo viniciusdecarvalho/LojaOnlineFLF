@@ -21,9 +21,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
     [Route(Rota)]
     public sealed class FuncionariosController : ControllerBase
     {
+        /// <summary>
+        /// Rota base
+        /// </summary>
         public const string Rota = "api/funcionarios";
 
-        private readonly ILogger<FuncionariosController> _logger;
         private readonly IAcessosService acessosService;
         private readonly IFuncionariosService funcionariosService;
 
@@ -31,26 +33,24 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Construtor padrao
         ///</summary>
         public FuncionariosController(
-            ILogger<FuncionariosController> logger,
             IAcessosService acessosService,
             IFuncionariosService funcionariosService)
         {
-            _logger = logger;
             this.acessosService = acessosService;
             this.funcionariosService = funcionariosService;
         }
 
         /// <summary>
-        /// Recuperar todos os funcionarios
+        /// Recuperar funcionarios utilizando paginacao
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResource<FuncionarioTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(FuncionariosComPaginacao), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterFuncionarios([FromQuery] Paginacao paginacao)
         {
             IPagedList<FuncionarioTO> funcionarios = await this.funcionariosService.ObterTodosAsync(paginacao);
 
-            var page = new PagedResource<FuncionarioTO>(funcionarios, paginacao, Rota);
+            var page = new FuncionariosComPaginacao(funcionarios, paginacao, Rota);
 
             return Ok(page);
         }
@@ -95,7 +95,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AtualizarFuncionario([FromRoute]Guid id, [FromBody] FuncionarioTO funcionario)
-        {       
+        {
+            if (!id.Equals(funcionario?.Id))
+            {
+                return BadRequest("identificador da rota diverge do cliente informado no corpo");
+            }
+
             await this.funcionariosService.AtualizarAsync(funcionario);
 
             return Ok(funcionario);

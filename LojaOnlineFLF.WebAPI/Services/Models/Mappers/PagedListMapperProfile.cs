@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models.Mappers
 {
-    public class PagedListMapperProfile : Profile
+    internal class PagedListMapperProfile : Profile
     {
         public PagedListMapperProfile()
         {

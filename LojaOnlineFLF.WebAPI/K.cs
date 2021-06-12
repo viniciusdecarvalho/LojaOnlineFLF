@@ -3,7 +3,7 @@ namespace LojaOnlineFLF.WebAPI
     ///<summary>
     /// Constantes
     ///</summary>
-    public static class K
+    internal static class K
     {
         ///<summary>
         /// Constantes de MediaType

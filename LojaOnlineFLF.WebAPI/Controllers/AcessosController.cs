@@ -67,7 +67,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
 
             if (funcionario is null)
             {
-                return Unauthorized();
+                return BadRequest("token nao validado");
             }
 
             var autenticacao =

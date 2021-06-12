@@ -3,7 +3,7 @@ using LojaOnlineFLF.DataModel.Models;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models.Mappers
 {
-    public class VendaMapperProfile : Profile
+    internal class VendaMapperProfile : Profile
     {
         public VendaMapperProfile()
         {

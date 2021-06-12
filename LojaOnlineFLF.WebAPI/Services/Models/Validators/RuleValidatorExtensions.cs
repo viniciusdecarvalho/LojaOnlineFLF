@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace LojaOnlineFLF.WebAPI.Services.Models
 {
-    public static class RuleValidatorExtensions
+    internal static class RuleValidatorExtensions
     {
         public static IRuleBuilderOptions<T, string>
            DeveRespeitarFormatacaoCpf<T>(this IRuleBuilder<T, string> ruleBuilder)

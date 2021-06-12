@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 
 namespace LojaOnlineFLF.WebAPI
 {
-    public static class StartupSwaggerExtensions
+    internal static class StartupSwaggerExtensions
     {
         private const string Bearer = JwtBearerDefaults.AuthenticationScheme;
 

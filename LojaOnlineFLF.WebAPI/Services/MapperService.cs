@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace LojaOnlineFLF.WebAPI.Services
 {
-    public class MapperService: IMapperService
+    internal class MapperService: IMapperService
     {
         private readonly IMapper mapper;
 
