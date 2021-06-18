@@ -6,9 +6,9 @@ namespace LojaOnlineFLF.DataModel.Models
 {
     public abstract class VendaSituacao
     {
-        internal static readonly VendaSituacao Aberta = new VendaAberta();
-        internal static readonly VendaSituacao Concluida = new VendaConcluida();
-        internal static readonly VendaSituacao Cancelada = new VendaCancelada();
+        public static readonly VendaSituacao Aberta = new VendaAberta();
+        public static readonly VendaSituacao Concluida = new VendaConcluida();
+        public static readonly VendaSituacao Cancelada = new VendaCancelada();
 
         internal static readonly IEnumerable<VendaSituacao> Situacoes
             = new VendaSituacao[] { Aberta, Concluida, Cancelada };

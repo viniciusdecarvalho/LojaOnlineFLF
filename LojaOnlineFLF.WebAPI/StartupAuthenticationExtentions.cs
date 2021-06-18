@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LojaOnlineFLF.Services;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,11 +20,15 @@ namespace LojaOnlineFLF.WebAPI
         public static IServiceCollection AddBearerAuthentication(this IServiceCollection services)
         {
             var key = Encoding.UTF8.GetBytes(K.Auth.SecurityKey);
+            var symmetricSecurityKey = new SymmetricSecurityKey(key);
+
+            var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
+            services.AddSingleton(credentials);
 
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
+                IssuerSigningKey = symmetricSecurityKey,
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true
@@ -49,10 +54,7 @@ namespace LojaOnlineFLF.WebAPI
                         return Task.CompletedTask;
                     }
                 };
-            });
-
-            services.AddSingleton(tokenValidationParameters);
-            services.AddScoped<IRefreshTokenManager, RefreshTokenManager>();
+            });                       
 
             return services;
         }

@@ -3,21 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.809.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.WebAPI", "LojaOnlineFLF.WebAPI\LojaOnlineFLF.WebAPI.csproj", "{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LojaOnlineFLF.WebAPI", "LojaOnlineFLF.WebAPI\LojaOnlineFLF.WebAPI.csproj", "{491FCA02-C14B-45B2-BFFF-BB861F6FC45A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.DataModel", "LojaOnlineFLF.DataModel\LojaOnlineFLF.DataModel.csproj", "{ECAD8B6C-B050-4D11-8B11-A478A10B5735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LojaOnlineFLF.DataModel", "LojaOnlineFLF.DataModel\LojaOnlineFLF.DataModel.csproj", "{ECAD8B6C-B050-4D11-8B11-A478A10B5735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.AuthAPI", "LojaOnlineFLF.AuthAPI\LojaOnlineFLF.AuthAPI.csproj", "{DA91F7B2-9878-465B-B66D-89E958417E5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LojaOnlineFLF.AuthAPI", "LojaOnlineFLF.AuthAPI\LojaOnlineFLF.AuthAPI.csproj", "{DA91F7B2-9878-465B-B66D-89E958417E5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{829FA652-F324-4FDA-BC87-69B5C1DF3F4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{48D91D45-DEEF-4C90-B840-44E2A89A83C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{48D91D45-DEEF-4C90-B840-44E2A89A83C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.Utils", "LojaOnlineFLF.Utils\LojaOnlineFLF.Utils.csproj", "{BD8E289C-3242-43B8-B685-46123C40E16C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LojaOnlineFLF.Utils", "LojaOnlineFLF.Utils\LojaOnlineFLF.Utils.csproj", "{BD8E289C-3242-43B8-B685-46123C40E16C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{43F472B6-75A7-40BB-B26E-1106D2A63DD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.LojaWebAPI.Tests", "LojaOnlineFLF.LojaWebAPI.Tests\LojaOnlineFLF.LojaWebAPI.Tests.csproj", "{5ED2300B-27D3-4743-B713-75C817B33663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LojaOnlineFLF.LojaWebAPI.Tests", "LojaOnlineFLF.LojaWebAPI.Tests\LojaOnlineFLF.LojaWebAPI.Tests.csproj", "{5ED2300B-27D3-4743-B713-75C817B33663}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.Services", "LojaOnlineFLF.Services\LojaOnlineFLF.Services.csproj", "{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{5ABBF0FC-73A7-4824-AB88-07D907E7538B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaOnlineFLF.Repositories", "LojaOnlineFLF.Repositories\LojaOnlineFLF.Repositories.csproj", "{7B341EA5-A564-4A72-8F54-4EAB1D288B11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,20 +47,21 @@ Global
 		{BD8E289C-3242-43B8-B685-46123C40E16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD8E289C-3242-43B8-B685-46123C40E16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD8E289C-3242-43B8-B685-46123C40E16C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3004474-B637-4417-AA03-01E6B2A85C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3004474-B637-4417-AA03-01E6B2A85C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3004474-B637-4417-AA03-01E6B2A85C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3004474-B637-4417-AA03-01E6B2A85C97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ED2300B-27D3-4743-B713-75C817B33663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ED2300B-27D3-4743-B713-75C817B33663}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ED2300B-27D3-4743-B713-75C817B33663}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ED2300B-27D3-4743-B713-75C817B33663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B341EA5-A564-4A72-8F54-4EAB1D288B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B341EA5-A564-4A72-8F54-4EAB1D288B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B341EA5-A564-4A72-8F54-4EAB1D288B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B341EA5-A564-4A72-8F54-4EAB1D288B11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {66B42F7C-A9C5-4CA0-8F33-2E6C9FEAE60D}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{491FCA02-C14B-45B2-BFFF-BB861F6FC45A} = {829FA652-F324-4FDA-BC87-69B5C1DF3F4B}
@@ -62,5 +69,10 @@ Global
 		{DA91F7B2-9878-465B-B66D-89E958417E5D} = {829FA652-F324-4FDA-BC87-69B5C1DF3F4B}
 		{BD8E289C-3242-43B8-B685-46123C40E16C} = {48D91D45-DEEF-4C90-B840-44E2A89A83C3}
 		{5ED2300B-27D3-4743-B713-75C817B33663} = {43F472B6-75A7-40BB-B26E-1106D2A63DD1}
+		{538A34D8-0FA7-4419-A8D5-7AB5B1E68C4A} = {5ABBF0FC-73A7-4824-AB88-07D907E7538B}
+		{7B341EA5-A564-4A72-8F54-4EAB1D288B11} = {5ABBF0FC-73A7-4824-AB88-07D907E7538B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66B42F7C-A9C5-4CA0-8F33-2E6C9FEAE60D}
 	EndGlobalSection
 EndGlobal

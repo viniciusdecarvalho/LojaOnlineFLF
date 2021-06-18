@@ -4,16 +4,14 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using LojaOnlineFLF.DataModel.Models;
 using LojaOnlineFLF.DataModel.Providers;
-using LojaOnlineFLF.WebAPI.Services;
+using LojaOnlineFLF.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI
 {
@@ -52,8 +50,15 @@ namespace LojaOnlineFLF.WebAPI
             services.AddDbContext<LojaEFContext>(opt =>
             {
                 string connectionString = GetConnectionString();
-                opt.UseInMemoryDatabase("lojaonline")
-                   .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning)) ;
+
+                opt.UseNpgsql(connectionString)
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+                //opt.UseInMemoryDatabase("lojaonlineflf")
+                //   .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+            })
+            .Configure<LojaEFContext>(opt => { 
+                
             });
 
             services.AddIdentity<Acesso, IdentityRole>(options =>
@@ -66,7 +71,6 @@ namespace LojaOnlineFLF.WebAPI
             
             services.AddDependencyInjectConfig();
             services.AddTransactionControlMiddleware<LojaEFContext>();
-            services.AddAutoMapperConfig();
             services.AddBearerAuthentication();   
             services.AddSwaggerGenConfig();
             services.AddCompressionConfig();
@@ -76,7 +80,7 @@ namespace LojaOnlineFLF.WebAPI
         {
             return
                 Environment.GetEnvironmentVariable("DB_CONNECTION") ??
-                Configuration.GetConnectionString("lojaonline");
+                Configuration.GetConnectionString("lojaonlineflf");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

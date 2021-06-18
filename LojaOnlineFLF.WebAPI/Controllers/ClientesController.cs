@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LojaOnlineFLF.WebAPI.Services;
-using LojaOnlineFLF.WebAPI.Services.Models;
+using LojaOnlineFLF.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
@@ -34,13 +31,16 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Recuperar cliente por {id}
         /// </summary>
+        /// <response code="200">Cliente</response>
+        /// <response code="400">Falha na busca</response>
+        /// <response code="404">Cliente nao encontrado</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ClienteTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Cliente), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ObterClientesPorId([FromRoute] Guid id)
+        public async Task<ActionResult<Cliente>> ObterClientesPorId([FromRoute] Guid id)
         {
-            ClienteTO cliente = await this.clientesService.ObterPorIdAsync(id);
+            Cliente cliente = await this.clientesService.ObterPorIdAsync(id);
 
             if (cliente is null)
             {
@@ -53,13 +53,16 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Recuperar cliente por {cpf}
         /// </summary>
+        /// <response code="200">Cliente</response>
+        /// <response code="400">Falha na busca</response>
+        /// <response code="404">Cliente nao encontrado</response>
         [HttpGet("cpf/{cpf}")]
-        [ProducesResponseType(typeof(ClienteTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Cliente), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ObterClientesPorCpf([FromRoute] string cpf)
+        public async Task<ActionResult<Cliente>> ObterClientesPorCpf([FromRoute] string cpf)
         {
-            ClienteTO cliente = await this.clientesService.ObterPorCpfAsync(cpf);
+            Cliente cliente = await this.clientesService.ObterPorCpfAsync(cpf);
 
             if (cliente is null)
             {
@@ -72,12 +75,14 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Adicionar cliente
         /// </summary>
+        /// <response code="201">Cliente adicionado</response>
+        /// <response code="400">Falha na busca</response>        
         [HttpPost]
-        [ProducesResponseType(typeof(ClienteTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Cliente), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AdicionarProduto([FromBody] ClienteTO cliente)
+        public async Task<ActionResult<Cliente>> AdicionarCliente([FromBody] ClienteCadastro cliente)
         {
-            ClienteTO novoCliente = await this.clientesService.AdicionarAsync(cliente);
+            Cliente novoCliente = await this.clientesService.AdicionarAsync(cliente);
 
             return Created($"api/clientes/{novoCliente.Id}", novoCliente);
         }
@@ -85,11 +90,14 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Atualizar cliente por {id}
         /// </summary>
+        /// <response code="200">Cliente com alteracoes</response>
+        /// <response code="400">Falha no processo de atualizacao</response> 
+        /// <response code="404">Cliente nao encontrado</response> 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ClienteTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Cliente), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarCliente([FromRoute] Guid id, [FromBody] ClienteTO cliente)
+        public async Task<ActionResult<Cliente>> AtualizarCliente([FromRoute] Guid id, [FromBody] Cliente cliente)
         {
             if (!id.Equals(cliente?.Id))
             {
@@ -104,13 +112,16 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// <summary>
         /// Remover cliente por {id}
         /// </summary>
+        /// <response code="204">Confirmacao</response>
+        /// <response code="400">Falha no processo de exclucao</response> 
+        /// <response code="404">Cliente nao encontrado</response> 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoverCliente([FromRoute] Guid id)
         {
-            ClienteTO cliente = await this.clientesService.ObterPorIdAsync(id);
+            Cliente cliente = await this.clientesService.ObterPorIdAsync(id);
 
             if (cliente is null)
             {

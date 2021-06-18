@@ -1,13 +1,12 @@
+using LojaOnlineFLF.Services;
+using LojaOnlineFLF.WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LojaOnlineFLF.WebAPI.Services;
-using LojaOnlineFLF.WebAPI.Services.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
@@ -39,12 +38,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar venda por {id}
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(VendaTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Venda), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterVendaPorId([FromRoute] Guid id)
         {
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(id);
 
             if (venda is null)
             {
@@ -58,12 +57,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar vendas por {cpf} de um cliente
         /// </summary>
         [HttpGet("cpf/{cpf}")]
-        [ProducesResponseType(typeof(VendaTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Venda), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterVendaPorCpf([FromRoute] string cpf)
         {
-            IEnumerable<VendaTO> vendas = await this.vendasService.ObterPorCpfClienteAsync(cpf);
+            IEnumerable<Venda> vendas = await this.vendasService.ObterPorCpfClienteAsync(cpf);
 
             return Ok(vendas);
         }
@@ -77,11 +76,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// caso contrário ou em caso de o cliente nao ser informado, a venda nao possuirá um cliente
         /// </remarks>
         [HttpPost]
-        [ProducesResponseType(typeof(VendaCadastroTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(VendaCadastro), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AdicionarVenda([FromBody] VendaCadastroTO venda)
+        public async Task<IActionResult> AdicionarVenda([FromBody] VendaCadastro venda)
         {
-            VendaTO novaVenda = await this.vendasService.AdicionarAsync(venda);
+            Venda novaVenda = await this.vendasService.AdicionarAsync(venda);
 
             return Created($"api/vendas/{novaVenda.Id}", novaVenda);
         }
@@ -90,10 +89,10 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Alterar informacoes de cadastro da venda
         /// </summary>
         //[HttpPut("{id}")]
-        [ProducesResponseType(typeof(VendaCadastroTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(VendaCadastro), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AlterarVenda([FromRoute]Guid id, [FromBody] VendaCadastradaTO venda)
+        public async Task<IActionResult> AlterarVenda([FromRoute]Guid id, [FromBody] VendaCadastrada venda)
         {
             bool existe = await this.vendasService.ContemAsync(id);
 
@@ -102,7 +101,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return NotFound();
             }
 
-            VendaTO novaVenda = await this.vendasService.AlterarVendaAsync(venda);
+            Venda novaVenda = await this.vendasService.AlterarVendaAsync(venda);
 
             return Ok(novaVenda);
         }
@@ -111,22 +110,21 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Definir quantidade do produto na venda por um codigo de barras
         /// </summary>
         [HttpPatch("{id}/produto/{codigoBarras}/quantidade/{quantidade}")]
-        [ProducesResponseType(typeof(VendaTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Venda), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AtualizarProduto([FromRoute] IdentificadorProdutoTO identificador)
         {
-            ProdutoTO produto = await this.produtosService.ObterPorCodigoBarrasAsync(identificador.CodigoBarras);
+            Produto produto = await this.produtosService.ObterPorCodigoBarrasAsync(identificador.CodigoBarras);
 
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(identificador.Id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(identificador.Id);
 
-            var item = new VendaItemTO {
-                VendaId = identificador.Id,
+            var item = new VendaItem {
                 ProdutoId = produto.Id,
                 Quantidade = identificador.Quantidade
             };
 
-            VendaTO vendaAlterada = await this.vendasService.AlterarItensAsync(venda.Id, item);
+            Venda vendaAlterada = await this.vendasService.AlterarItensAsync(venda.Id, item);
 
             return Ok(vendaAlterada);
         }
@@ -135,12 +133,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Definir produtos da venda
         /// </summary>
         [HttpPatch("{id}/produtos")]
-        [ProducesResponseType(typeof(VendaTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Venda), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarProdutos([FromRoute] Guid id, [FromBody] IEnumerable<VendaItemTO> itens)
+        public async Task<IActionResult> AtualizarProdutos([FromRoute] Guid id, [FromBody] IEnumerable<VendaItem> itens)
         {
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(id);
 
             if (venda is null)
             {
@@ -152,7 +150,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
                 return BadRequest("itens da venda nao informados");
             }
 
-            VendaTO vendaAlterada = await this.vendasService.AlterarItensAsync(id, itens.ToArray());
+            Venda vendaAlterada = await this.vendasService.AlterarItensAsync(id, itens.ToArray());
             
             return Ok(vendaAlterada);
         }
@@ -166,7 +164,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CancelarVenda([FromRoute] Guid id)
         {
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(id);
 
             if (venda is null)
             {
@@ -187,7 +185,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ConcluirVenda([FromRoute] Guid id)
         {
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(id);
 
             if (venda is null)
             {
@@ -208,14 +206,14 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ReabrirVenda([FromRoute] Guid id)
         {
-            VendaTO venda = await this.vendasService.ObterPorIdAsync(id);
+            Venda venda = await this.vendasService.ObterPorIdAsync(id);
 
             if (venda is null)
             {
                 return NotFound();
             }
 
-            VendaTO vendaReaberta = await this.vendasService.ReabrirVendaAsync(venda);
+            Venda vendaReaberta = await this.vendasService.ReabrirVendaAsync(venda);
 
             return Ok(vendaReaberta);
         }
@@ -245,12 +243,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar venda pora a {data}
         /// </summary>
         [HttpGet("abertas/data/{data}")]
-        [ProducesResponseType(typeof(IEnumerable<VendaTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Venda>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterVendasPorData([FromRoute] DateTime data)
         {
-            IEnumerable<VendaTO> vendas = await this.vendasService.ObterVendasPorData(data);
+            IEnumerable<Venda> vendas = await this.vendasService.ObterVendasPorData(data);
 
             return Ok(vendas);
         }

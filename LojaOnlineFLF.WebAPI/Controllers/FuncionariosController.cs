@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LojaOnlineFLF.DataModel;
-using LojaOnlineFLF.WebAPI.Services;
-using LojaOnlineFLF.WebAPI.Services.Models;
+using LojaOnlineFLF.Repositories;
+using LojaOnlineFLF.Services;
+using LojaOnlineFLF.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
@@ -44,13 +43,13 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar funcionarios utilizando paginacao
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(FuncionariosComPaginacao), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Funcionarios), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterFuncionarios([FromQuery] Paginacao paginacao)
         {
-            IPagedList<FuncionarioTO> funcionarios = await this.funcionariosService.ObterTodosAsync(paginacao);
+            IPagedList<Funcionario> funcionarios = await this.funcionariosService.ObterTodosAsync(paginacao);
 
-            var page = new FuncionariosComPaginacao(funcionarios, paginacao, Rota);
+            var page = new Funcionarios(funcionarios, paginacao, Rota);
 
             return Ok(page);
         }
@@ -59,12 +58,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar funcionario por {id}
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Funcionario), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterFuncionarioPorId([FromRoute] Guid id)
         {
-            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+            Funcionario funcionario = await this.funcionariosService.ObterPorIdAsync(id);
 
             if (funcionario is null)
             {
@@ -78,11 +77,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Adicionar funcionario
         /// </summary>
         [HttpPost]
-        [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Funcionario), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AdicionarFuncionario([FromBody] FuncionarioTO funcionario)
+        public async Task<IActionResult> AdicionarFuncionario([FromBody] Funcionario funcionario)
         {
-            FuncionarioTO novoFuncionario = await this.funcionariosService.AdicionarAsync(funcionario);
+            Funcionario novoFuncionario = await this.funcionariosService.AdicionarAsync(funcionario);
 
             return Created($"api/funcionarios/{novoFuncionario.Id}", novoFuncionario);
         }
@@ -91,10 +90,10 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Atualizar funcionario por {id}
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(FuncionarioTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Funcionario), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarFuncionario([FromRoute]Guid id, [FromBody] FuncionarioTO funcionario)
+        public async Task<IActionResult> AtualizarFuncionario([FromRoute]Guid id, [FromBody] Funcionario funcionario)
         {
             if (!id.Equals(funcionario?.Id))
             {
@@ -115,7 +114,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoverFuncionario([FromRoute] Guid id)
         {
-            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+            Funcionario funcionario = await this.funcionariosService.ObterPorIdAsync(id);
 
             if (funcionario is null)
             {
@@ -136,7 +135,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AdicionarAcesso([FromRoute] Guid id, [FromBody] Login acesso)
         {
-            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+            Funcionario funcionario = await this.funcionariosService.ObterPorIdAsync(id);
 
             if (funcionario is null)
             {
@@ -157,7 +156,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AlterarAcesso([FromRoute] Guid id, [FromBody] LoginAlteracao acesso)
         {
-            FuncionarioTO funcionario = await this.funcionariosService.ObterPorIdAsync(id);
+            Funcionario funcionario = await this.funcionariosService.ObterPorIdAsync(id);
             
             if (funcionario is null)
             {

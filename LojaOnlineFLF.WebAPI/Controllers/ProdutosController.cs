@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LojaOnlineFLF.DataModel;
-using LojaOnlineFLF.WebAPI.Services;
-using LojaOnlineFLF.WebAPI.Services.Models;
+using LojaOnlineFLF.Repositories;
+using LojaOnlineFLF.Services;
+using LojaOnlineFLF.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace LojaOnlineFLF.WebAPI.Controllers
 {
@@ -41,13 +40,13 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar  produtos utilizando paginacao
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(ProdutosComPaginacao), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Produtos), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterProdutos([FromQuery]Paginacao paginacao)
         {
-            IPagedList<ProdutoTO> produtos = await this.produtosService.ObterTodosAsync(paginacao);
+            IPagedList<Produto> produtos = await this.produtosService.ObterTodosAsync(paginacao);
 
-            var page = new ProdutosComPaginacao(produtos, paginacao, Rota);
+            var page = new Produtos(produtos, paginacao, Rota);
 
             return Ok(page);
         }
@@ -56,12 +55,12 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Recuperar produto por {id}
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ProdutoTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterProdutoPorId([FromRoute] Guid id)
         {
-            ProdutoTO produto = await this.produtosService.ObterPorIdAsync(id);
+            Produto produto = await this.produtosService.ObterPorIdAsync(id);
 
             if (produto is null)
             {
@@ -75,11 +74,11 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Adicionar produto
         /// </summary>
         [HttpPost]
-        [ProducesResponseType(typeof(ProdutoTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoCadastroTO produto)
+        public async Task<IActionResult> AdicionarProduto([FromBody] ProdutoCadastro produto)
         {
-            ProdutoTO novoProduto = await this.produtosService.AdicionarAsync(produto);
+            Produto novoProduto = await this.produtosService.AdicionarAsync(produto);
 
             return Created($"api/produtos/{novoProduto.Id}", novoProduto);
         }
@@ -88,10 +87,10 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         /// Atualizar produto por {id}
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ProdutoTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Produto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AtualizarProduto([FromRoute] Guid id, [FromBody] ProdutoTO produto)
+        public async Task<IActionResult> AtualizarProduto([FromRoute] Guid id, [FromBody] Produto produto)
         {
             bool existe = await this.produtosService.ContemAsync(id);
 
@@ -114,7 +113,7 @@ namespace LojaOnlineFLF.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoverProduto([FromRoute] Guid id)
         {
-            ProdutoTO produto = await this.produtosService.ObterPorIdAsync(id);
+            Produto produto = await this.produtosService.ObterPorIdAsync(id);
 
             if (produto is null)
             {

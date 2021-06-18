@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LojaOnlineFLF.WebAPI.Services.Models;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using FluentValidation;
+using LojaOnlineFLF.WebAPI.Services.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace LojaOnlineFLF.WebAPI
 {
@@ -26,7 +29,7 @@ namespace LojaOnlineFLF.WebAPI
 
         public static IServiceCollection AddSwaggerGenConfig(this IServiceCollection services)
         {
-            var xmlDoc = Path.Combine(System.AppContext.BaseDirectory, "LojaOnlineFLF.WebAPI.xml");
+            var xmlDoc = Path.Combine(System.AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
             services.AddSwaggerGen(c => {
 
                 c.CustomSchemaIds(x => {
@@ -39,9 +42,7 @@ namespace LojaOnlineFLF.WebAPI
 
                 c.AddSecurityDefinition(Bearer, new OpenApiSecurityScheme
                 {
-                    Description = @"JWT Authorization, cabecalho usando o Bearer. 
-                      Informe 'Bearer'([espaço]) e então seu token na caixa de texto.
-                      Exemplo: 'Bearer 12345abcdef'",
+                    Description = @"JWT Authorization, cabecalho usando o Bearer. Informe 'Bearer'([espaço]) e então seu token na caixa de texto. Exemplo: 'Bearer 12345abcdef'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
@@ -69,6 +70,8 @@ namespace LojaOnlineFLF.WebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LojaOnlineFLF", Version = "v1" });
                 if (File.Exists(xmlDoc))
                     c.IncludeXmlComments(xmlDoc);
+
+                //c.AddFluentValidationRules();
             });
 
             return services;

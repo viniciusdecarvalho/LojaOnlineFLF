@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LojaOnlineFLF.DataModel;
 using LojaOnlineFLF.DataModel.Models;
+using LojaOnlineFLF.Services;
 using LojaOnlineFLF.WebAPI.Controllers;
 using LojaOnlineFLF.WebAPI.Services;
 using LojaOnlineFLF.WebAPI.Services.Models;
@@ -18,7 +19,7 @@ namespace LojaOnlineFLF.LojaWebAPI.Tests.Controllers
         public async Task DeveRetornarSucessoETokenParaLoginValido()
         {
             var login = new Login() { Usuario = "usuario", Senha = "senha" };
-            var funcionario = new FuncionarioTO();
+            var funcionario = new Services.Funcionario();
             var token = new Autenticacao();
 
             var mockAcessosRepository = new Mock<IAcessosService>();
@@ -28,22 +29,22 @@ namespace LojaOnlineFLF.LojaWebAPI.Tests.Controllers
 
             var mockAuthService = new Mock<IAuthService>();
             mockAuthService
-                .Setup(a => a.Autenticar(It.IsAny<AfirmacaoTO>()))
+                .Setup(a => a.Autenticar(It.IsAny<Afirmacao>()))
                     .Returns(token);
 
             var controller = new AcessosController(mockAcessosRepository.Object, mockAuthService.Object);
 
-            var result = await controller.ValidarAcesso(login) as OkObjectResult;
+            var result = await controller.ValidarAcesso(login);
 
             Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status200OK, result?.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (result.Result as StatusCodeResult).StatusCode);
             Assert.Equal(token, result?.Value);
         }
 
         [Fact]
         public async Task DeveRetornarFalhaParaLoginInvalido()
         {
-            FuncionarioTO funcionario = null;
+            Services.Funcionario funcionario = null;
             var login = It.IsAny<Login>();
 
             var mockAcessosService = new Mock<IAcessosService>();
@@ -55,10 +56,10 @@ namespace LojaOnlineFLF.LojaWebAPI.Tests.Controllers
             
             var controller = new AcessosController(mockAcessosService.Object, mockAuthService.Object);
 
-            var result = await controller.ValidarAcesso(login) as StatusCodeResult;
+            var result = await controller.ValidarAcesso(login);
 
-            Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status401Unauthorized, result?.StatusCode);            
+            Assert.NotNull(result.Result);
+            Assert.Equal(StatusCodes.Status400BadRequest, (result.Result as StatusCodeResult).StatusCode);            
         }
     }
 }
