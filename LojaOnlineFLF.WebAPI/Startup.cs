@@ -46,7 +46,16 @@ namespace LojaOnlineFLF.WebAPI
                 })
                 .AddFluentValidation();
 
-            services.AddDbContext<CacheContext>(opt => opt.UseInMemoryDatabase("cache"));
+            services.AddDistributedRedisCache(options =>
+            {
+                var section = Configuration.GetSection("RedisConfig");
+                var connection = section.GetValue<string>("Connnection");
+                var instanceName = section.GetValue<string>("InstanceName");
+
+                options.Configuration = connection;
+                options.InstanceName = instanceName;
+            });
+
             services.AddDbContext<LojaEFContext>(opt =>
             {
                 string connectionString = GetConnectionString();
@@ -58,7 +67,7 @@ namespace LojaOnlineFLF.WebAPI
                 //   .ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             })
             .Configure<LojaEFContext>(opt => { 
-                
+
             });
 
             services.AddIdentity<Acesso, IdentityRole>(options =>

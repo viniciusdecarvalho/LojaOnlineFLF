@@ -11,6 +11,8 @@ namespace LojaOnlineFLF.WebAPI
         {
             services.AddServicesDependencies();
 
+            services.AddScoped<IRefreshTokenService, RefreshTokenManagerWithCacheRedis>();
+
             //Action Validators
             services.AddScoped<IValidator<Paginacao>, PaginacaoValidator>();
             services.AddScoped<IValidator<IdentificadorProdutoTO>, IdentificadorProdutoValidator>();
